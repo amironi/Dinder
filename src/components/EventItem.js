@@ -32,26 +32,22 @@ const styles = StyleSheet.create({
   },
 });
 
-const EventItem = (props) => {
-    const event = props.people;
+const EventItem = (event) => {
 
     return (
         <TouchableWithoutFeedback 
             onPress={() => {
-
                 const props  = {
                     event : event,
                     title : isAdmin(event) ? 'עדכן' : 'הרשם',
-                    action: isAdmin(event) ? updateMeal : register
+                    action: isAdmin(event) ? 
+                                updateMeal : 
+                                register
                 };
 
                 this.props.navigation.navigate( 'EventNew',props );
-                    // isAdmin(event) ? 'EventEdit' : 'EventDetails',
-                     
-             
-
-            }}
-        >
+            }}>
+        
             <View style={[theme.cardStyle, styles.card]}>
                 <Image
                     source={{ uri: '../images/background.jpg'}}
@@ -62,10 +58,10 @@ const EventItem = (props) => {
                     size={100} 
                     style={styles.icon}
                 />
-                <Text style={[theme.cardTitleStyle, styles.title]}>{props.people.type} : האירוע</Text>
-                <Text style={[theme.cardTitleStyle, styles.title]}>{props.people.area} : באיזור</Text>
-                <Text style={[theme.cardTitleStyle, styles.title]}>{props.people.date} : במועד</Text>
-                <Text style={[theme.cardTitleStyle, styles.title]}>{props.people.remains} : מספר המקומות שנותרו</Text>
+                <Text style={[theme.cardTitleStyle, styles.title]}>{event.type} : האירוע</Text>
+                <Text style={[theme.cardTitleStyle, styles.title]}>{event.area} : באיזור</Text>
+                <Text style={[theme.cardTitleStyle, styles.title]}>{event.date} : במועד</Text>
+                <Text style={[theme.cardTitleStyle, styles.title]}>{event.remains} : מספר המקומות שנותרו</Text>
                        {/* <Text style={[theme.cardActionStyle, styles.action]}>{props.people.company}</Text> */}
             </View>
         </TouchableWithoutFeedback>

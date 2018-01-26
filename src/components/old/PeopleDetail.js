@@ -117,4 +117,4 @@ const mapStateToProps = state => {
    };
 };
 
-export default connect(mapStateToProps, actions)(PeopleDetail);
+// export default connect(mapStateToProps, actions)(PeopleDetail);

@@ -1,0 +1,22 @@
+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
+
+
+curl --request POST \
+  --url https://api.sendgrid.com/v3/mail/send \
+  --header " \
+  --header 'Content-Type: application/json' \
+  --data ''
+
+fetch('https://api.sendgrid.com/v3/mail/send', {
+  method: 'POST',
+  headers: {
+    "Authorization: Bearer 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
+",
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({"personalizations": [{"to": [{"email": "test@example.com"}]}],"from": {"email": "test@example.com"},"subject": "Sending with SendGrid is Fun","content": [{"type": "text/plain", "value": "and easy to do anywhere, even with cURL"}]}),
+  data: JSON.stringify({"personalizations": [{"to": [{"email": "test@example.com"}]}],"from": {"email": "test@example.com"},"subject": "Sending with SendGrid is Fun","content": [{"type": "text/plain", "value": "and easy to do anywhere, even with cURL"}]}),
+}).then((response) => response.json())
+    .then((responseJson) => {
+      console.log;
+    });

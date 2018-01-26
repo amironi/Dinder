@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, Image, ListView   } from 'react-native';
 import { MKTextField, MKColor, MKButton} from 'react-native-material-kit';
-// import {createNewMeal} from '../actions';
 import {list_items} from '../data';
 
 const styles = StyleSheet.create({
@@ -55,7 +54,6 @@ const TextfieldWithFloatingLabel = MKTextField.textfieldWithFloatingLabel()
   .withStyle(styles.textfieldWithFloatingLabel)
   .withTextInputStyle({flex: 1, textAlign: 'right'})
   .withTintColor(MKColor.BlueGrey)
-  // .withAlignSelf('right')
   .withFloatingLabelFont({
     fontSize: 10,
     fontStyle: 'italic',
@@ -74,90 +72,90 @@ const TextfieldWithFloatingLabel = MKTextField.textfieldWithFloatingLabel()
   .withTintColor(MKColor.BlueGrey)
   .build();
 
-// const AddButton = MKButton.coloredButton()
-//   .withText('הוסף ארוחה חדשה')
-//   .build();
-
 class EventNew extends Component {
   
-  state = {
-    list_items: list_items
-  };
+
   componentWillMount(){
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
 
-    this.dataSource = ds.cloneWithRows(this.state.list_items);
+    this.state = {
+      visitors: list_items,
+      dataSource: ds.cloneWithRows(list_items)
+    };
   }
   componenrDidMount(){
-
-    this.setState(...props.event);
+    // this.setState({...this.props.event});
 
     setTimeout((() => {
       if (this.refs.defaultInput) {
         this.refs.defaultInput.focus();
       }
     }), 1000);
-
   }
 
-  static navigationOptions = { title: 'ארוחה חדשה' }
-    
-  // onAddPress() {
-  //     ;
-  //   }
+  static navigationOptions = ({ navigation }) => {
+    const {state} = navigation;
+    return {
+      title: `${state.params.title}`,
+    };
+  };
+
+  
+  // static navigationOptions = { title: this.props.title }
+
   render() {
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.form}>
         <TextfieldWithFloatingLabel  
             ref="defaultInput"
-            placeholder={'סוג האירוע'}
+            placeholder={'סוג/שם האירוע'}
+            value={this.state.type}
             onChangeText={value => this.state.type = value}
           />
          <TextfieldWithFloatingLabel  
-            ref="defaultInput"
             placeholder={'שכונה ועיר'}
+            value={this.state.area}
             onChangeText={value => this.state.area = value}
           />
           <TextfieldWithFloatingLabel 
+            value={this.state.address}
             placeholder={'כתובת מדוייקת של האירוע( יוצג רק למאושרים)'}
             onChangeText={value => this.state.address = value}
           />
           <TextfieldWithFloatingLabel 
             placeholder={'תאריך ושעה'}
-            // value={this.props.form.date}
+            value={this.state.date}
             onChangeText={value => this.state.date = value}
           />
           <TextfieldWithFloatingLabel 
             placeholder={'מספר מקומות לאירוח'}
             withKeyboardType='numeric'
-            // value={this.props.form.sits}
+            value={this.state.sits}
             onChangeText={value => this.state.sits = value}
           />
           <Text style={styles.title}></Text>
-          <Text style={styles.title}>רשימת מרכיבים לארוחה</Text>
+          <Text style={styles.title}>? מה להביא</Text>
           
-
            <ListView 
-              dataSource={this.dataSource}
-              renderRow={(rowData) => { 
-                console.log(i); 
-                   
-                  <TextfieldWithFloatingLabel2 
-                    value={rowData} 
-                    onChangeText={value => {this.state.list_items = value} }/> 
+              dataSource={this.state.dataSource}
+              renderRow={(rowData,sectionID,rowID) => { 
+   
+                   return <Text>{rowData},{rowID}</Text>
+                  // <TextfieldWithFloatingLabel2 
+                  //   value={rowData} 
+                  //   onChangeText={value => {this.state.list_items = value} }/> 
                  }
             }/>   
 
           <View style={styles.add}>
             <MKButton 
-
             text = {this.props.title}
             onPress={ ()=>{
                 this.props.action( this.state );
-                this.props.navigation.goBack()
+                this.props.navigation.goBack();
               }
             }/>
           </View>
@@ -166,11 +164,5 @@ class EventNew extends Component {
     );
   }
 }
-
-// const mapStateToProps = state => {
-//   const { first_name, last_name, phone, email, company, project, notes } = state;
-//   return { first_name, last_name, phone, email, company, project, notes };
-
-// };
 
 export default EventNew;

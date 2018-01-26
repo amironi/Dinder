@@ -28,12 +28,18 @@ export const isAdmin = (event) => {
 };
 
 
-export const updateMeal = (data, uid ) => {
+export const register = (event) => {
     const { currentUser } = firebase.auth();
 
-   data.uid = uid;
-   
-   firebase.database().ref(`/events/${uid}`)
+//   event.wait = [...event.wait, currentUser ];
+
+   firebase.database().ref(`/events/${event.uid}`)
+   .set(data);
+};
+
+export const updateMeal = (data ) => {
+
+   firebase.database().ref(`/events/${event.uid}`)
    .set(data);
 
    // .then(() => {
@@ -45,7 +51,7 @@ export const createNewMeal = (data) => {
     const { currentUser } = firebase.auth();
     console.log(data);
     
-    data.admin = currentUser.displayName;
+    data.admin = currentUser.displayName; //todo
     data.email = currentUser.email;
     data.remains = data.sits;
 

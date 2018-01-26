@@ -13,9 +13,9 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 import { createNewMeal, loadInitialMeals } from '../actions';
 
 
-// const AddButton = MKButton.coloredButton()
-//   .withText('ADD')
-//   .build();
+const AddButton = MKButton.coloredButton()
+  .withText('ADD')
+  .build();
 
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     // flex: 1
     width: 353,
     marginBottom: 30,
-   size : 20
+  //  size : 20
     // flex : 1,
     // flexDirection:  'row',
     // paddingRight: 20,
@@ -52,82 +52,64 @@ class EventsList extends Component {
     static navigationOptions = {
         title: "ארוחות קרובות"
       }
-      state = {
-        data : {1:'f'}
-      }
-    componentWillMount() {
-      // this.props.people = ['fdfsd'];
+
+    constructor(props) {
+
+      super(props)
 
       const ds = new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2,
       });
   
-      this.dataSource = ds.cloneWithRows(this.state.data);
+      this.state = {
+        dataSource : ds.cloneWithRows([])
+      };
 
       loadInitialMeals( (data) =>{
 
-        _.map(data, (val, uid) => {    
+        // _.map(data, (val, uid) => {    
             
-            // const data = { ...val, uid};
-              //  console.log(data);  
-     //         this.setState({data: [...this.state.data, data]} );
-              this.setState({data: val} );
-            } );
-         console.log(this.state.data);  
-          // this.setState({data})
+        //       val.uid = uid;
+        //        this.state.data.push( val );
+        //     } );
+        // this.state.data = data;
+        //  console.log(this.state.data);  
+
+
+         this.setState({
+          dataSource: ds.cloneWithRows(data)
+        });
+
       } );
-
-
-             
-  //     
-
-  // });
-
     }
 
-  // renderInitialView() {
-    
-
-  //   if (this.props.detailView === true) {
-  //     return (
-  //       <PeopleDetail />
-  //     );
-  //   } else {
-  //     return (
-        
-  //     );
-  //   }
-
-
-    
-  // }
   render() {
+    const props = {
+      title: 'הוסף ארוחה חדשה',
+      action: createNewMeal
+    };
+
     return (
       <View style={styles.container}>
         <View style={styles.EventItem}>
            <ListView 
             enableEmptySections={true}
-            dataSource={this.dataSource}
+            dataSource={this.state.dataSource}
             renderRow={
-              (rowData) =>{ <EventItem people={rowData} /> } }/> 
+              (rowData) =>{ return <EventItem event={rowData} /> } }/> 
 
-          {/* <EventItem people={this.state.data}/> */}
+         
         </View>
+        
+        {/* <EventItem event={email = 'sdfsdaf'} /> */}
 
         <View style={styles.add_button}>
-            <MKButton
-              test = '+'
-              onPress={ () => {this.props.navigation.navigate('EventNew',
-              {
-                title = 'הוסף ארוחה חדשה',
-                action = createNewMeal
-              })}}/>
+            <AddButton
+              // text = 'Add'
+              onPress={ () => {
+                this.props.navigation.navigate('EventNew',props)
+              }}/>
         </View>
-{/* 
-        <TouchableOpacity
-                onPress={() => { this.props.navigation.navigate('EventNew')}}>
-                <Image source={require('../images/add_button.png')} style={styles.add_button}/>
-        </TouchableOpacity> */}
 
       </View>
     );
