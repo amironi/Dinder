@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
   add_button: {
     // flex: 1
     width: 353,
-    marginBottom: 30,
+    // marginBottom: 15,
+     marginBottom: 100
   //  size : 20
     // flex : 1,
     // flexDirection:  'row',
@@ -65,6 +66,11 @@ class EventsList extends Component {
         dataSource : ds.cloneWithRows([])
       };
 
+
+      this.load();
+    }
+
+    load() {
       loadInitialMeals( (data) =>{
 
         // _.map(data, (val, uid) => {    
@@ -75,13 +81,15 @@ class EventsList extends Component {
         // this.state.data = data;
         //  console.log(this.state.data);  
 
-
-         this.setState({
+        const ds = new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 !== r2,
+        });
+        
+        this.setState({
           dataSource: ds.cloneWithRows(data)
         });
-
-      } );
-    }
+      })
+    };
 
   render() {
     const props = {
@@ -96,7 +104,11 @@ class EventsList extends Component {
             enableEmptySections={true}
             dataSource={this.state.dataSource}
             renderRow={
-              (rowData) =>{ return <EventItem event={rowData} /> } }/> 
+              (rowData,sectionID,rowID) =>{ return <EventItem 
+                event={rowData}
+                uid={rowID}
+                cb={() => {} } 
+              navigation={this.props.navigation} /> } }/> 
 
          
         </View>

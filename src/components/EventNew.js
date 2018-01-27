@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, Image, ListView   } from 'react-native';
 import { MKTextField, MKColor, MKButton} from 'react-native-material-kit';
-import {list_items} from '../data';
+import { isAdmin } from '../actions/index';
 
 const styles = StyleSheet.create({
   form: {
@@ -63,7 +63,8 @@ const TextfieldWithFloatingLabel = MKTextField.textfieldWithFloatingLabel()
   // .withKeyboardType('Hebrew')
   .build();
 
-  const TextfieldWithFloatingLabel2 = MKTextField.textfieldWithFloatingLabel()
+  const TextfieldWithFloatingLabel2 = MKTextField
+  .textfieldWithFloatingLabel()
   .withStyle( {
     // height: 48,  // have to do it on iOS
     // marginTop: 10,
@@ -72,21 +73,34 @@ const TextfieldWithFloatingLabel = MKTextField.textfieldWithFloatingLabel()
   .withTintColor(MKColor.BlueGrey)
   .build();
 
+const AddButton = MKButton
+  .coloredButton()
+  .withText('ADD')
+  .build();
+
 class EventNew extends Component {
   
 
   componentWillMount(){
+    // import {list_items} from '../data';
+    const list_items = require('./data');
+    
+    console.log('componentWillMount',this.props);
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
-
-    this.state = {
-      visitors: list_items,
+    // {require('./data')}
+    this.setState( {
+      event: {
+        visitors: list_items,
+        ...this.props.navigation.state.params.event
+      },
       dataSource: ds.cloneWithRows(list_items)
-    };
+    });
   }
-  componenrDidMount(){
+  componentDidMount(){
     // this.setState({...this.props.event});
+    console.log('componentDidMount',this.props);
 
     setTimeout((() => {
       if (this.refs.defaultInput) {
@@ -112,29 +126,34 @@ class EventNew extends Component {
         <TextfieldWithFloatingLabel  
             ref="defaultInput"
             placeholder={'סוג/שם האירוע'}
-            value={this.state.type}
-            onChangeText={value => this.state.type = value}
+            defaultValue={this.state.event.type}
+            editable={isAdmin(this.state.event.uid)}
+            onChangeText={value => this.state.event.type = value}
           />
          <TextfieldWithFloatingLabel  
             placeholder={'שכונה ועיר'}
-            value={this.state.area}
-            onChangeText={value => this.state.area = value}
+            defaultValue={this.state.event.area}
+            editable={isAdmin(this.state.event.uid)}
+            onChangeText={value => this.state.event.area = value}
           />
           <TextfieldWithFloatingLabel 
-            value={this.state.address}
+            defaultValue={this.state.event.address}
             placeholder={'כתובת מדוייקת של האירוע( יוצג רק למאושרים)'}
-            onChangeText={value => this.state.address = value}
+            editable={isAdmin(this.state.event.uid)}
+            onChangeText={value => this.state.event.address = value}
           />
           <TextfieldWithFloatingLabel 
             placeholder={'תאריך ושעה'}
-            value={this.state.date}
-            onChangeText={value => this.state.date = value}
+            defaultValue={this.state.event.date}
+            editable={isAdmin(this.state.event.uid)}
+            onChangeText={value => this.state.event.date = value}
           />
           <TextfieldWithFloatingLabel 
             placeholder={'מספר מקומות לאירוח'}
             withKeyboardType='numeric'
-            value={this.state.sits}
-            onChangeText={value => this.state.sits = value}
+            defaultValue={this.state.event.sits}
+            editable={isAdmin(this.state.event.uid)}
+            onChangeText={value => this.state.event.sits = value}
           />
           <Text style={styles.title}></Text>
           <Text style={styles.title}>? מה להביא</Text>
@@ -143,18 +162,21 @@ class EventNew extends Component {
               dataSource={this.state.dataSource}
               renderRow={(rowData,sectionID,rowID) => { 
    
-                   return <Text>{rowData},{rowID}</Text>
-                  // <TextfieldWithFloatingLabel2 
-                  //   value={rowData} 
-                  //   onChangeText={value => {this.state.list_items = value} }/> 
-                 }
+                   return (
+                  //  <Text>{rowData},{rowID}</Text>
+                   <TextfieldWithFloatingLabel2 
+                     defaultValue={rowData} 
+                     editable={isAdmin(this.state.event.uid)}
+                     onChangeText={value => {this.state.event.visitors[rowID]=value} }/> 
+                   )}
             }/>   
 
           <View style={styles.add}>
-            <MKButton 
-            text = {this.props.title}
+            <AddButton 
+            text = {this.props.navigation.state.params.title}
             onPress={ ()=>{
-                this.props.action( this.state );
+                this.props.navigation.state.params.action( 
+                  this.state.event );
                 this.props.navigation.goBack();
               }
             }/>
