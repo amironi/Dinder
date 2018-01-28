@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Main extends Component {
+export default class App extends Component {
   state = { loggedIn: null};
 
     componentWillMount() {
