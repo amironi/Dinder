@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, FlatList } from 'react-native';
 import { MKTextField } from 'react-native-material-kit';
 
 const Pending = ({pending}) => {
 
-  const MTF = MKTextField
-    .withTextInputStyle({ textAlign: 'right' })
-    .withTintColor(MKColor.BlueGrey)
-    .build();
+  // const MTF = MKTextField
+  //   .withTextInputStyle({ textAlign: 'right' })
+  //   .withTintColor(MKColor.BlueGrey)
+  //   .build();
 
   return(
     <View>
@@ -19,8 +19,8 @@ const Pending = ({pending}) => {
                 <View>
                   <Text>pair.name</Text>
                   <Text>pair.item</Text>
-                  <Button  raised  title="Approve" onPress={}/>
-                  <Button  raised  title="Decline" onPress={}/>
+                  <Button  raised  title="Approve" onPress={ true}/>
+                  <Button  raised  title="Decline" onPress={true}/>
                 </View>
             )}}
       />

@@ -33,7 +33,7 @@ class EventsList extends Component {
     }
 
     onPress(event) {
-      this.props.navigation.navigate( 'EventDetails', event )
+       this.props.navigation.navigate( 'EventDetails', event )
     }
 
     render() {
@@ -42,7 +42,7 @@ class EventsList extends Component {
         <View style={styles.container}>
           <FlatList 
             data={this.state.events}
-            renderItem={ (event) =>{ return <EventItem event={event} onPress={this.onPress(event)} /> } }
+            renderItem={ (event) =>{ return <EventItem event={event} onPress={() => this.onPress(event)} /> } }
             ListFooterComponent={<View style={styles.footer}></View>} /> 
           
           <AddButton 

@@ -102,7 +102,7 @@ export const snapshotToArray = snapshot => {
     return returnArr;
 };
 
-export const loadInitialMeals = (cb) => {
+export const loadInitialEvents = (cb) => {
     const { currentUser } = firebase.auth();
 
     firebase.database().ref(`/events/`)

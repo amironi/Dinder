@@ -2,125 +2,8 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, Image, FlatList } from 'react-native';
 import { MKTextField, MKColor, MKButton } from 'react-native-material-kit';
 import { isApproved,updateEvent,isAdmin } from '../actions/index';
-import { AprovedItem } from './EventDetails/AprovedItem'
-import { Pending } from './EventDetails/Pending'
-
-const AddButton = MKButton
-  .coloredButton()
-  .withText('ADD/UPDATE')
-  .build();
-
-
-  const TF = MKTextField
-  .textfieldWithFloatingLabel()
-  .withStyle(styles.textfieldWithFloatingLabel)
-  .withTextInputStyle({ flex: 1, textAlign: 'right' })
-  .withTintColor(MKColor.BlueGrey)
-  .withFloatingLabelFont({
-    fontSize: 10,
-    fontStyle: 'italic',
-    fontWeight: '200',
-    textAlign: 'right'
-  })
-  .build();
-
-class EventDetails extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state;
-    return {
-      title: `${params.admin  ? 'עדכן' : 'הצטרף'}`,
-    };
-  };
-
-  state = {
-    error = "",
-  };
-
-  componentDidMount() {
-   
-    console.log('EventDetails::componentDidMount', this.props);
-
-    const list_items = Object.assign({}, require('../data'));
-  
-    this.setState({
-      event: {
-          approved: list_items,
-        },
-    });
-
-    const {event} = this.props.navigation.state.params;
-    event && this.setState({  event  });
-  
-    setTimeout((() => {
-       if (this.refs.defaultInput) {
-         this.refs.defaultInput.focus();
-       }
-    }), 1000);
-  }
-
-  renderTextfield(
-    data, 
-    ph, 
-    showPass = false, 
-    defaultInput = ''){
-    
-    const admin = isAdmin(event);
-    const password = showPass &&
-                     !admin &&
-                     !isApproved(event);
-    return 
-      <TF
-        ref={defaultInput}
-        placeholder={ph}
-        defaultValue={data}
-        editable={admin}
-        password={password}
-        onChangeText={value => data = value}
-      />
-  }
-
-  render() {
-    const {event} = this.state;
-    const admin = isAdmin(event);
-
-   return (
-      <ScrollView 
-        style={styles.form} 
-        showsVerticalScrollIndicator={false}>
-
-          {renderTextfield(event.type, 'סוג/שם האירוע', false,'defaultInput')}
-          {renderTextfield(event.area, 'שכונה ועיר')}
-          {renderTextfield(event.address, 'כתובת מדוייקת של האירוע( יוצג רק למוזמנים שאושרו', true)}
-          {renderTextfield(event.date, 'תאריך ושעה')}
-          {renderTextfield(event.sits, 'מספר מקומות לאירוח')}
-          <Text style={styles.error}>{this.state.error}</Text>
-
-          <Text style={styles.title}>מי מביא מה?</Text>
-          <FlatList
-            data={ event.approved }
-            renderItem ={pair => <AprovedItem admin={admin} pair={pair}/> }
-          />
-        
-          {admin  && event.pending &&
-          <Pending pending={event.pending}/> }
-          
-          {admin &&
-          <AddButton
-              style={styles.add}
-              onPress={() => {
-                updateEvent(
-                    this.state.event,
-                    () => this.setState({ error: ('נא למלא  מקומות לאירוח*')  }));
-    
-                  this.props.navigation.goBack();
-              } }
-              />
-          }
-
-      </ScrollView>
-    );
-  }
-}
+import { AprovedItem } from './EventDetails/AprovedItem';
+import { Pending } from './EventDetails/Pending';
 
 
 const styles = StyleSheet.create({
@@ -161,5 +44,127 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
+
+const AddButton = MKButton
+  .coloredButton()
+  .withText('ADD/UPDATE')
+  .build();
+
+
+const TF = MKTextField.textfieldWithFloatingLabel()
+  .withStyle(styles.textfieldWithFloatingLabel)
+  .withTextInputStyle({ flex: 1, textAlign: 'right' })
+  .withTintColor(MKColor.BlueGrey)
+  .withFloatingLabelFont({
+    fontSize: 10,
+    fontStyle: 'italic',
+    fontWeight: '200',
+    textAlign: 'right'
+  })
+  .build();
+
+class EventDetails extends Component {
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return {
+      title: `${params.admin  ? 'עדכן' : 'הצטרף'}`,
+    };
+  };
+
+  state = {
+    event: {
+      approved: [],
+    }, 
+    error: '',
+  };
+
+  componentDidMount() {
+   
+    console.log('EventDetails::componentDidMount', this.props);
+
+    const list_items = Object.assign({}, require('../data'));
+  
+    this.setState({
+      event: {
+          approved: list_items,
+        },
+    });
+
+    const {event} = this.props.navigation.state.params;
+    event && this.setState({  event  });
+  
+    setTimeout((() => {
+       if (this.refs.defaultInput) {
+         this.refs.defaultInput.focus();
+       }
+    }), 1000);
+  }
+
+  renderTextfield(
+    event,
+    field, 
+    placeholder, 
+    showPass = false, 
+    defaultInput = ''){
+    
+    const admin = isAdmin(event);
+    const password = showPass &&
+                     !admin &&
+                     !isApproved(event);
+    return 
+      <TF
+        ref={defaultInput}
+        placeholder={placeholder}
+        defaultValue={field}
+        editable={admin}
+        password={password}
+        onChangeText={value => field = value}
+      />
+  }
+
+  render() {
+    const {event} = this.state;
+    const admin = isAdmin(event);
+
+   return (
+      <ScrollView 
+        style={styles.form} 
+        showsVerticalScrollIndicator={false}>
+
+          {this.renderTextfield(event,event.type, 'סוג/שם האירוע', false,'defaultInput')}
+          {this.renderTextfield(event,event.area, 'שכונה ועיר')}
+          {this.renderTextfield(event,event.address, 'כתובת מדוייקת של האירוע( יוצג רק למוזמנים שאושרו', true)}
+          {this.renderTextfield(event,event.date, 'תאריך ושעה')}
+          {this.renderTextfield(event,event.sits, 'מספר מקומות לאירוח')}
+          <Text style={styles.error}>{this.state.error}</Text>
+
+          <Text style={styles.title}>מי מביא מה?</Text>
+          <FlatList
+            data={ event.approved }
+            renderItem ={pair => <AprovedItem admin={admin} pair={pair}/> }
+          />
+        
+          {admin  && event.pending &&
+          <Pending pending={event.pending}/> }
+          
+          {admin &&
+          <AddButton
+              style={styles.add}
+              onPress={() => {
+                updateEvent(
+                    this.state.event,
+                    () => this.setState({ error: ('נא למלא  מקומות לאירוח*')  }));
+    
+                  this.props.navigation.goBack();
+              } }
+              />
+          }
+
+      </ScrollView>
+    );
+  }
+}
+
+
 
 export default EventDetails;
