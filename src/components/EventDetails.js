@@ -5,10 +5,10 @@
  */
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, Image, ListView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Image, FlatList } from 'react-native';
 import { MKTextField, MKColor, MKButton } from 'react-native-material-kit';
 import { isApproved } from '../actions/index';
-import {list_items} from '../data';
+
   
 const styles = StyleSheet.create({
   form: {
@@ -102,84 +102,95 @@ const AddButton = MKButton
   .withText('ADD/UPDATE')
   .build();
 
-// list_items = require('../data');
-// list_items = require('../data');
-class EventNew extends Component {
+// ;
+// list_items = ;
+
+import {list_items} from '../data';
+
+class EventDetails extends Component {
+
+  list_items = require('../data');
+
+  state = {
+    event: {
+      approved: list_items,
+    },
+  };
 
   componentWillMount() {
 
-
     console.log('componentWillMount', this.props);
 
-    this.setState({
-      event: {
-        approved: list_items,
-        ...this.props.navigation.state.params.event
-      },
-    });
+      this.setState({
+        event: this.props.navigation.state.params.event
+      });
+  
+     setTimeout((() => {
+       if (this.refs.defaultInput) {
+         this.refs.defaultInput.focus();
+       }
+     }), 1000);
 
-  }
-  componentDidMount() {
-    // this.setState({...this.props.event});
-    console.log('componentDidMount', this.props);
-
-    setTimeout((() => {
-      if (this.refs.defaultInput) {
-        this.refs.defaultInput.focus();
-      }
-    }), 1000);
   }
 
   static navigationOptions = ({ navigation }) => {
-    const { state } = navigation;
+    const { params } = navigation.state;
     return {
-      title: `${state.params.title}`,
+      title: `${params.admin  ? 'עדכן' : 'הצטרף'}`,
     };
   };
 
+  renderApproved() {
 
-  // static navigationOptions = { title: this.props.title }
-  getDataSource(a) {
-    return  new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2,
-      }).cloneWithRows(a ? a : [] )
-  }
-
-  // isAdmin(){
-  //   const {admin} = this.props.navigation.state.params;
-
-  //   console.log('isAdmin', admin );
-
-  //   return 
-  //     admin
-  // }
-
-  renderPending() {
-    // return ()s
-
-    if(!this.props.navigation.state.params.admin || 
-    !this.state.event.renderPending )
-    {
-      return(
-        <View/>
-      )
-    }
+    const { params } = this.props.navigation.state;
+    const {event} =  this.state;
 
     return(
       <View>
-      <Text style={styles.title}></Text>
-      <Text style={styles.title}>רשימת ממתינים לאישור</Text>
-        <ListView
-          enableEmptySections={true}
-          dataSource={  this.getDataSource(this.state.event.renderPending) }
-          renderRow={(rowData, sectionID, rowID) => {
+         <FlatList
+         data={ event.approved }
+         renderItem ={item => {
 
+             return (
+               <View style={styles.visit}>
+                 <TextfieldWithFloatingLabel2
+                 defaultValue={Object.values(rowData)[0]}
+                 editable={admin}
+                 onChangeText={value => { 
+                   event.approved[rowID][Object.keys(rowData)[0]] = value }} />
+                 
+               <TextfieldWithFloatingLabel2
+                 defaultValue={Object.keys(rowData)[0]}
+                 editable={admin}
+                 onChangeText={value => { 
+                   event.approved[rowID][value] = Object.values(rowData)[0]} } />
+               </View>
+             )
+           }  }
+            />
+        </View>
+        )    
+  }
+
+  renderPending() {
+
+    const { params } = this.props.navigation.state;
+    const {event} =  this.state;
+
+    if(!params.admin || !event.renderPending )
+      return( <View/> )
+
+    return(
+      <View>
+        <Text style={styles.title}>רשימת ממתינים לאישור</Text>
+        <FlatList
+          data={ event.pending }
+          renderItem={({item}) => {
             return (
-
               <TextfieldWithFloatingLabel2
-                defaultValue={rowData}
+                defaultValue={item}
                 editable={admin}
-                onChangeText={value => { this.state.event.approved[rowID] = value }} />
+                onChangeText={value => { event.approved[rowID] = value }} />
             )
           }
           } />  
@@ -188,88 +199,61 @@ class EventNew extends Component {
   }
 
   render() {
-    const event =  this.state;
+    const {event} =  this.state;
     const {admin} = this.props.navigation.state.params;
-    const approved = isApproved(this.state.event);
+    const {params} = this.props.navigation.state;
+    const approved = isApproved(event);
 
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.form}>
           <TextfieldWithFloatingLabel
             ref="defaultInput"
-
             placeholder={'סוג/שם האירוע'}
-            defaultValue={this.state.event.type}
+            defaultValue={event.type}
             editable={admin}
-            onChangeText={value => this.state.event.type = value}
+            onChangeText={value => event.type = value}
           />
           <TextfieldWithFloatingLabel
             placeholder={'שכונה ועיר'}
-            defaultValue={this.state.event.area}
+            defaultValue={event.area}
             editable={admin}
-            onChangeText={value => this.state.event.area = value}
+            onChangeText={value => event.area = value}
           />
           <TextfieldWithFloatingLabel
-            defaultValue={this.state.event.address}
+            defaultValue={event.address}
             placeholder={'כתובת מדוייקת של האירוע( יוצג רק למוזמנים שאושרו)'}
             editable={admin}
             password={!admin && !approved}
-            onChangeText={value => this.state.event.address = value}
+            onChangeText={value => event.address = value}
           />
           <TextfieldWithFloatingLabel
             placeholder={'תאריך ושעה'}
-            defaultValue={this.state.event.date}
+            defaultValue={event.date}
             editable={admin}
-            onChangeText={value => this.state.event.date = value}
+            onChangeText={value => event.date = value}
           />
           <TextfieldWithFloatingLabel
             placeholder={'מספר מקומות לאירוח'}
             keyboardType='numeric'
             // style={[style.textfieldWithFloatingLabel,{color: MKColor.Blue}]}
-            defaultValue={this.state.event.sits}
+            defaultValue={event.sits}
             editable={admin}
-            onChangeText={value =>
-              {   
-                this.setState({
-                error: ""
-              }) 
-            this.state.event.sits = value}}
+            onChangeText={value => this.setState({  error: "" })  event.sits = value}}
           />
           <Text style={styles.error}>{this.state.error}</Text>
           <Text style={styles.title}>מי מביא מה?</Text>
 
-          <ListView
-          enableEmptySections={true}
-          dataSource={  this.getDataSource(this.state.event.approved) }
-          renderRow={(rowData, sectionID, rowID) => {
+         
 
-              return (
-                <View style={styles.visit}>
-                  <TextfieldWithFloatingLabel2
-                  defaultValue={Object.values(rowData)[0]}
-                  editable={admin}
-                  onChangeText={value => { 
-                    this.state.event.approved[rowID][Object.keys(rowData)[0]] = value }} />
-                  
-                <TextfieldWithFloatingLabel2
-                  defaultValue={Object.keys(rowData)[0]}
-                  editable={admin}
-                  onChangeText={value => { 
-                    this.state.event.approved[rowID][value] = Object.values(rowData)[0]} } />
-                </View>
-              )
-            }  }
-             />
-
+          {this.renderAproved()}
           {this.renderPending()}
+
+
           <View style={styles.add}>
             <AddButton
-              // text={this.props.navigation.state.params.title}
-              text={'dfsdfdsafs'}
               onPress={() => {
-
-                // console.log('clicked')
-                if(!this.state.event.sits )
+                if(!event.sits )
                 {
                     this.setState({
                       error: ('נא למלא  מקומות לאירוח*')
@@ -278,12 +262,13 @@ class EventNew extends Component {
                     return;
                 }
 
-                this.props.navigation.state.params.uid  &&
-                (this.state.event.uid =
-                 this.props.navigation.state.params.uid);
+                params.uid  &&
+                (event.uid = params.uid);
 
-                this.props.navigation.state.params.action(
-                  this.state.event);
+
+                admin ? 
+                updateMeal(event) : 
+                register(event);
 
                 this.props.navigation.goBack();
               }
@@ -295,4 +280,4 @@ class EventNew extends Component {
   }
 }
 
-export default EventNew;
+export default EventDetails;

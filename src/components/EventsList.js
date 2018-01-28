@@ -93,31 +93,28 @@ class EventsList extends Component {
 
   render() {
     const props = {
-      title: 'הוסף ארוחה חדשה',
-      action: createNewMeal,
       admin : true
     };
+
+    const {navigation} = this.props;
 
     return (
       <View style={styles.container}>
         <View style={styles.EventItem}>
            <ListView 
-            enableEmptySections={true}
-            dataSource={this.state.dataSource}
+            
+            data={this.state.dataSource}
             renderRow={
-              (rowData,sectionID,rowID) =>{ return <EventItem 
+              (item) =>{ return <EventItem 
                 event={rowData}
                 uid={rowID}
                 cb={() => {} } 
-              navigation={this.props.navigation} /> } }/> 
+              navigation={navigation} /> } }/> 
         </View>
         
         <View style={styles.add_button}>
             <AddButton
-              // text = 'Add'
-              onPress={ () => {
-                this.props.navigation.navigate('EventNew',props)
-              }}/>
+              onPress={ () => { navigation.navigate('EventDetails',props) }}/>
         </View>
 
       </View>

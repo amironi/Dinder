@@ -35,20 +35,23 @@ const styles = StyleSheet.create({
 
 // const SwipeoutWithPer = (event) => {
 
-const EventItem = (event) => {
+const EventItem = (props) => {
 
-    console.log(event);
+    const props  = {    
+        event : props.event,
+        admin : isAdmin(props.event),
+    };
 
     const swipeBtns = [{
         text: 'Delete',
         backgroundColor: 'red',
-        // underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-        onPress: () => { deleteMeal(event) }
+        onPress: () => { deleteMeal(props.event) }
       }];
 
+      console.log(props.event);
+
+
     return (
-
-
         <Swipeout 
             style={[theme.cardStyle, styles.card]}
             right={swipeBtns}
@@ -59,17 +62,8 @@ const EventItem = (event) => {
                 onPress={() => {
                     console.log(event);
 
-                    const props  = {    
-                        event : event.event,
-                        uid : event.uid,
-                        admin : isAdmin(event.event),
-                        title : isAdmin(event.event) ? 'עדכן' : 'הצטרף',
-                        action: isAdmin(event.event) ? 
-                                    updateMeal : 
-                                    register
-                    };
-
-                    event.navigation.navigate( 'EventNew',props );
+                    
+                    event.navigation.navigate( 'EventDetails',props );
                 }}>
             
                 <View>

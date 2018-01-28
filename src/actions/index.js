@@ -65,47 +65,27 @@ export const createNewMeal = (data) => {
 };
 
 
-export const deleteMeal = (event) => {
-    // const { currentUser } = firebase.auth();
+export const deleteMeal = (event,cb) => {
 
-
-    // firebase.database().ref(`/events/${uid}/email/`)
-    // .on('value', (snapshot) =>  {
+    if(!isAdmin(event))
+    {
+        alert('אינך מנהל האירוע');
+        return;
+    }
     
-        console.log(event);
-        
-        if(!isAdmin(event.event))
-        {
-            alert('אינך מנהל האירוע');
-            return;
-        }
-        
-        firebase.database().ref(`/events/${event.uid}`)
-            .remove()
-            .then(() => {
-                console.log('deleteMeal');
-                event.cb();
-            });
-        
-    // } )
-  
-
+    firebase.database().ref(`/events/${event.uid}`)
+        .remove()
+        .then(() => {
+            console.log('deleteMeal');
+            cb();
+        });
+    
 };
 
 export const loadInitialMeals = (cb) => {
     const { currentUser } = firebase.auth();
 
-    // firebase.database().ref(`/events/`).isEqual(0)
-
-    // if( firebase.database().ref(`/events/`).isEqual(0) )
-    //     { 
-    //         cb([]); 
-    //         return;
-    //      }
-
     firebase.database().ref(`/events/`)
     .on('value', (snapshot) => cb(snapshot.exists() ? snapshot.val() : []) )
-    
     ;
-    
 };
