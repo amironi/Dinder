@@ -35,9 +35,16 @@ export const register = (event,item) => {
     firebase.database().ref(`/events/${event.uid}/pending/`).set(data);
 };
 
-export const updateMeal = (event ) => {
+export const updateEvent = (event,err ) => {
 
     // console.log(event);
+
+
+   if (!event.sits ) {
+       cb()
+       return;
+   }
+
 
    firebase.database().ref(`/events/${event.uid}`)
    .set(event);

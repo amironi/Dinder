@@ -21,7 +21,6 @@ const AprovedItem = ({admin,pair}) => {
         onChangeText={value => pair.item = value } />
     </View>
     )
-
 }
 
 export default AprovedItem;

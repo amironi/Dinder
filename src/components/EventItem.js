@@ -7,8 +7,6 @@ import {deleteMeal} from '../actions';
 
 const theme = getTheme();
 
-// const SwipeoutWithPer = (event) => {
-
 const EventItem = ({event,onPress}) => {
 
     const swipeBtns = [{

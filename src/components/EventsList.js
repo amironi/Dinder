@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { Text, View, StyleSheet, FlatList, TouchableOpacity,ListFooterComponent, Image } from 'react-native';
 import { MKTextField, MKColor, MKButton, getTheme} from 'react-native-material-kit';
 import _ from 'lodash';
 import EventItem from './EventItem';
@@ -42,7 +42,8 @@ class EventsList extends Component {
         <View style={styles.container}>
           <FlatList 
             data={this.state.events}
-            renderItem={ (event) =>{ return <EventItem event={event} onPress={this.onPress(event)} /> } } /> 
+            renderItem={ (event) =>{ return <EventItem event={event} onPress={this.onPress(event)} /> } }
+            ListFooterComponent={<View style={styles.footer}></View>} /> 
           
           <AddButton 
             style={styles.add_button}
@@ -51,7 +52,7 @@ class EventsList extends Component {
       );
   }
 }
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -62,7 +63,9 @@ const styles = StyleSheet.create({
   EventItem: {
     width: 353,
   },
-
+  footer: {
+    height: 150,
+  },
   add_button: {
      width: 353,
      marginBottom: 100
