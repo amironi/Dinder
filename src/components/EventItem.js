@@ -2,7 +2,8 @@ import React from 'react';
 import { Text, View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
 import { getTheme } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import {isAdmin, updateMeal} from '../actions';
+import {deleteMeal,isAdmin, updateMeal, register} from '../actions';
+import Swipeout from 'react-native-swipeout';
 
 const theme = getTheme();
 
@@ -32,43 +33,64 @@ const styles = StyleSheet.create({
   },
 });
 
-const EventItem = (props) => {
-    const event = props.people;
+// const SwipeoutWithPer = (event) => {
+
+const EventItem = (event) => {
+
+    console.log(event);
+
+    const swipeBtns = [{
+        text: 'Delete',
+        backgroundColor: 'red',
+        // underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+        onPress: () => { deleteMeal(event) }
+      }];
 
     return (
-        <TouchableWithoutFeedback 
-            onPress={() => {
 
-                const props  = {
-                    event : event,
-                    title : isAdmin(event) ? 'עדכן' : 'הרשם',
-                    action: isAdmin(event) ? updateMeal : register
-                };
 
-                this.props.navigation.navigate( 'EventNew',props );
-                    // isAdmin(event) ? 'EventEdit' : 'EventDetails',
-                     
-             
+        <Swipeout 
+            style={[theme.cardStyle, styles.card]}
+            right={swipeBtns}
+            autoClose={true}
+            backgroundColor= 'transparent'>
+            <TouchableWithoutFeedback 
+            // style={[theme.cardStyle, styles.card]}
+                onPress={() => {
+                    console.log(event);
 
-            }}
-        >
-            <View style={[theme.cardStyle, styles.card]}>
-                <Image
-                    source={{ uri: '../images/background.jpg'}}
-                    style={[theme.cardImageStyle, styles.image]}
-                />
-                <Icon
-                    name={'user'}
-                    size={100} 
-                    style={styles.icon}
-                />
-                <Text style={[theme.cardTitleStyle, styles.title]}>{props.people.type} : האירוע</Text>
-                <Text style={[theme.cardTitleStyle, styles.title]}>{props.people.area} : באיזור</Text>
-                <Text style={[theme.cardTitleStyle, styles.title]}>{props.people.date} : במועד</Text>
-                <Text style={[theme.cardTitleStyle, styles.title]}>{props.people.remains} : מספר המקומות שנותרו</Text>
-                       {/* <Text style={[theme.cardActionStyle, styles.action]}>{props.people.company}</Text> */}
-            </View>
-        </TouchableWithoutFeedback>
+                    const props  = {    
+                        event : event.event,
+                        uid : event.uid,
+                        admin : isAdmin(event.event),
+                        title : isAdmin(event.event) ? 'עדכן' : 'הצטרף',
+                        action: isAdmin(event.event) ? 
+                                    updateMeal : 
+                                    register
+                    };
+
+                    event.navigation.navigate( 'EventNew',props );
+                }}>
+            
+                <View>
+                    {/* style={[theme.cardStyle, styles.card]}> */}
+                    <Image
+                        source={require('../images/background.jpg')}
+                        style={[theme.cardImageStyle, styles.image]}
+                    />
+                    <Icon
+                        name={'user'}
+                        size={100} 
+                        style={styles.icon}
+                    />
+                    <Text style={[theme.cardTitleStyle, styles.title]}>{event.type} : האירוע</Text>
+                    <Text style={[theme.cardTitleStyle, styles.title]}>{event.area} : באיזור</Text>
+                    <Text style={[theme.cardTitleStyle, styles.title]}>{event.date} : במועד</Text>
+                    <Text style={[theme.cardTitleStyle, styles.title]}>{event.remains} : מספר המקומות שנותרו</Text>
+                        {/* <Text style={[theme.cardActionStyle, styles.action]}>{props.people.company}</Text> */}
+                </View>
+            </TouchableWithoutFeedback>
+        </Swipeout>
     );
 };
 

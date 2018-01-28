@@ -5,12 +5,19 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Container, StyleSheet, Text, View } from 'react-native';
 import firebase from 'firebase';
-// import Login from './Login';
-// import Loader from './Loader';
-// import Navigation from './Navigation';
-// import reducers from '../reducers/PeopleReducer';
+import Login from './Login';
+import Loader from './Loader';
+import Navigation from './Navigation';
+import { Provider } from 'react-redux';
+
+import { createStore, applyMiddleware } from 'redux'
+import reducers from '../reducers/PeopleReducer';
+import Thunk from 'redux-thunk';
+
+const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), applyMiddleware(Thunk));
+
 
 const styles = StyleSheet.create({
   container: {
@@ -43,7 +50,7 @@ export default class App extends Component {
         });
     }
 
-    renderInitialView() {
+    render() {
       switch (this.state.loggedIn) {
         case true:
         return <Navigation />
@@ -53,11 +60,12 @@ export default class App extends Component {
           return <Loader size="large" />;
       }
     }
-  render() {
-    return (
-      <Provider store={store}>
-            {this.renderInitialView()}
-      </Provider>
-    );
-  }
+  // render() {
+  //   return (
+  //     <Provider store={store}>
+  //     {
+  //       this.renderInitialView()}
+  //     </Provider> 
+  //   );
+  // }
 }

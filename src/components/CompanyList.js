@@ -75,4 +75,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(CompanyList);
+// export default connect(mapStateToProps)(CompanyList);
