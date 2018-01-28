@@ -2,19 +2,8 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, Image, FlatList } from 'react-native';
 import { MKTextField, MKColor, MKButton } from 'react-native-material-kit';
 import { isApproved } from '../actions/index';
-
-const TextfieldWithFloatingLabel = MKTextField
-  .textfieldWithFloatingLabel()
-  .withStyle(styles.textfieldWithFloatingLabel)
-  .withTextInputStyle({ flex: 1, textAlign: 'right' })
-  .withTintColor(MKColor.BlueGrey)
-  .withFloatingLabelFont({
-    fontSize: 10,
-    fontStyle: 'italic',
-    fontWeight: '200',
-    textAlign: 'right'
-  })
-  .build();
+import { AprovedItem } from './EventDetails/AprovedItem'
+import { Pending } from './EventDetails/Pending'
 
 const AddButton = MKButton
   .coloredButton()
@@ -53,55 +42,8 @@ class EventDetails extends Component {
     }), 1000);
   }
 
-  renderAprovedItem({name,item}) {
-    
-    const admin = isAdmin(this.state.event);
 
-    const MTF = MKTextField
-      // .textfieldWithFloatingLabel()
-      // .withStyle({})
-      .withEditable(admin)
-      .withTextInputStyle({ textAlign: 'right' })
-      .withTintColor(MKColor.BlueGrey)
-      .build();
-
-    return(
-      <View>
-        <MTF
-          defaultValue={name}
-          onChangeText={value => name = value } />
-
-        <MTF
-          defaultValue={item}
-          onChangeText={value => item = value } />
-      </View>
-      )
-    }
-
-  renderPending(pending) {
-    const admin = isAdmin(this.state.event);
-
-    if(!admin || !pending ) return( <View/> )
-
-    const MTF = MKTextField
-      .withEditable(admin)
-      .withTextInputStyle({ textAlign: 'right' })
-      .withTintColor(MKColor.BlueGrey)
-      .build();
-  
-    return (
-      <View>
-        <Text style={styles.title}>רשימת ממתינים לאישור</Text>
-        <FlatList
-          data={ pending }
-          renderItem={({item}) => { 
-              return<MTF defaultValue={item} onChangeText={value => {item = value }} />}}
-        />  
-      </View>
-    )
-  }
-
-  renderTextfieldWithFloatingLabel(
+  renderTextfield(
     data, 
     ph, 
     showPass = false, 
@@ -111,6 +53,20 @@ class EventDetails extends Component {
     const password = showPass &&
                      !admin &&
                      !isApproved(event);
+
+
+   const TextfieldWithFloatingLabel = MKTextField
+    .textfieldWithFloatingLabel()
+    .withStyle(styles.textfieldWithFloatingLabel)
+    .withTextInputStyle({ flex: 1, textAlign: 'right' })
+    .withTintColor(MKColor.BlueGrey)
+    .withFloatingLabelFont({
+      fontSize: 10,
+      fontStyle: 'italic',
+      fontWeight: '200',
+      textAlign: 'right'
+    })
+    .build();
 
     return 
       <TextfieldWithFloatingLabel
@@ -124,28 +80,28 @@ class EventDetails extends Component {
   }
 
   render() {
-    const {event} =  this.state;
+    const {event} = this.state;
 
    return (
       <ScrollView 
         style={styles.form} 
         showsVerticalScrollIndicator={false}>
 
-          {renderTextfieldWithFloatingLabel(event.type, 'סוג/שם האירוע', false,'defaultInput')}
-          {renderTextfieldWithFloatingLabel(event.area, 'שכונה ועיר')}
-          {renderTextfieldWithFloatingLabel(event.address, 'כתובת מדוייקת של האירוע( יוצג רק למוזמנים שאושרו', true)}
-          {renderTextfieldWithFloatingLabel(event.date, 'תאריך ושעה')}
-          {renderTextfieldWithFloatingLabel(event.sits, 'מספר מקומות לאירוח')}
+          {renderTextfield(event.type, 'סוג/שם האירוע', false,'defaultInput')}
+          {renderTextfield(event.area, 'שכונה ועיר')}
+          {renderTextfield(event.address, 'כתובת מדוייקת של האירוע( יוצג רק למוזמנים שאושרו', true)}
+          {renderTextfield(event.date, 'תאריך ושעה')}
+          {renderTextfield(event.sits, 'מספר מקומות לאירוח')}
            
           <Text style={styles.error}>{this.state.error}</Text>
           <Text style={styles.title}>מי מביא מה?</Text>
 
           <FlatList
             data={ event.approved }
-            renderItem ={item => {this.renderAprovedItem(item) }}
+            renderItem ={item => <AprovedItem admin={admin} pair={item}/> }
           />
         
-          {this.renderPending()}
+          <Pending admin={admin} pending={event.pending}/>
           
           <AddButton
             style={styles.add}
