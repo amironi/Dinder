@@ -14,33 +14,6 @@ const LoginButton = MKButton.coloredButton()
     .withText('LOGIN')
     .build();
 
-const styles = StyleSheet.create({
-    form: {
-        paddingBottom: 10,
-        width: 200,
-    },
-    fieldStyles: {
-        height: 40,
-        color: MKColor.Orange,
-        width: 200,
-    },
-    loginButtonArea: {
-        marginTop: 20,
-    },
-    container: {
-    flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    errorMessage: {
-        marginTop: 15,
-        fontSize: 15,
-        color: 'red',
-        alignSelf: 'center'
-    },
-});
-
 export default class Login extends Component {
   state = {
       email: '',
@@ -119,3 +92,32 @@ onAuthFailed(err) {
     );
   }
 }
+
+
+
+const styles = StyleSheet.create({
+    form: {
+        paddingBottom: 10,
+        width: 200,
+    },
+    fieldStyles: {
+        height: 40,
+        color: MKColor.Orange,
+        width: 200,
+    },
+    loginButtonArea: {
+        marginTop: 20,
+    },
+    container: {
+    flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
+    errorMessage: {
+        marginTop: 15,
+        fontSize: 15,
+        color: 'red',
+        alignSelf: 'center'
+    },
+});

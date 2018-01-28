@@ -9,9 +9,6 @@ import EventDetails from './EventDetails';
 const Navigation = StackNavigator({
     Home: { screen: EventsList },
     EventDetails: { screen: EventDetails },
-    // CompanyList: { screen: CompanyList }
-    // EventEdit: { screen: EventEdit },
-    // EventDetails: { screen: EventDetails },
   });
 
 

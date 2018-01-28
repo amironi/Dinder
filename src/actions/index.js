@@ -82,10 +82,23 @@ export const deleteMeal = (event,cb) => {
     
 };
 
+
+export const snapshotToArray = snapshot => {
+    const returnArr = [];
+
+    snapshot.forEach(childSnapshot => {
+        const item = childSnapshot.val(); 
+        item.uid = childSnapshot.key;
+        returnArr.push(item);
+    });
+
+    return returnArr;
+};
+
 export const loadInitialMeals = (cb) => {
     const { currentUser } = firebase.auth();
 
     firebase.database().ref(`/events/`)
-    .on('value', (snapshot) => cb(snapshot.exists() ? snapshot.val() : []) )
+    .on('value', (snapshot) => cb(snapshotToArray(snapshot)) )
     ;
 };

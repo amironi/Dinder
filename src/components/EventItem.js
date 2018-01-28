@@ -1,55 +1,21 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
 import { getTheme } from 'react-native-material-kit';
-import Icon from 'react-native-vector-icons/EvilIcons';
-import {deleteMeal,isAdmin, updateMeal, register} from '../actions';
 import Swipeout from 'react-native-swipeout';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import {deleteMeal} from '../actions';
 
 const theme = getTheme();
 
-const styles = StyleSheet.create({
-
-  card: {
-    marginTop: 20,
-  },
-  title: {
-      top: 20,
-      left: 80,
-      fontSize: 24,
-  },
-  image: {
-      height: 100,
-  },
-  action: {
-      backgroundColor: 'black',
-      color: 'white',
-  },
-  icon: {
-      position: 'absolute',
-      top: 15,
-      left: 0,
-      color: 'white',
-      backgroundColor: 'rgba(255,255,255,0)',
-  },
-});
-
 // const SwipeoutWithPer = (event) => {
 
-const EventItem = (props) => {
-
-    const props  = {    
-        event : props.event,
-        admin : isAdmin(props.event),
-    };
+const EventItem = ({event,onPress}) => {
 
     const swipeBtns = [{
         text: 'Delete',
         backgroundColor: 'red',
-        onPress: () => { deleteMeal(props.event) }
+        onPress: () => deleteMeal(event) 
       }];
-
-      console.log(props.event);
-
 
     return (
         <Swipeout 
@@ -58,16 +24,8 @@ const EventItem = (props) => {
             autoClose={true}
             backgroundColor= 'transparent'>
             <TouchableWithoutFeedback 
-            // style={[theme.cardStyle, styles.card]}
-                onPress={() => {
-                    console.log(event);
-
-                    
-                    event.navigation.navigate( 'EventDetails',props );
-                }}>
-            
+                onPress={() => onPress() }>
                 <View>
-                    {/* style={[theme.cardStyle, styles.card]}> */}
                     <Image
                         source={require('../images/background.jpg')}
                         style={[theme.cardImageStyle, styles.image]}
@@ -81,11 +39,37 @@ const EventItem = (props) => {
                     <Text style={[theme.cardTitleStyle, styles.title]}>{event.area} : באיזור</Text>
                     <Text style={[theme.cardTitleStyle, styles.title]}>{event.date} : במועד</Text>
                     <Text style={[theme.cardTitleStyle, styles.title]}>{event.remains} : מספר המקומות שנותרו</Text>
-                        {/* <Text style={[theme.cardActionStyle, styles.action]}>{props.people.company}</Text> */}
                 </View>
             </TouchableWithoutFeedback>
         </Swipeout>
     );
 };
 
+const styles = StyleSheet.create({
+
+    card: {
+      marginTop: 20,
+    },
+    title: {
+        top: 20,
+        left: 80,
+        fontSize: 24,
+    },
+    image: {
+        height: 100,
+    },
+    action: {
+        backgroundColor: 'black',
+        color: 'white',
+    },
+    icon: {
+        position: 'absolute',
+        top: 15,
+        left: 0,
+        color: 'white',
+        backgroundColor: 'rgba(255,255,255,0)',
+    },
+  });
+
+  
 export default EventItem;

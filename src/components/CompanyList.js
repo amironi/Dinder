@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ListView } from 'react-native';
+import { Text, View, StyleSheet, FlatList } from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CompanyItem from './CompanyItem';
@@ -35,14 +35,14 @@ class CompanyList extends Component {
         }
     }
   render() {
-    const ds = new ListView.DataSource({
+    const ds = new FlatList.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
     this.dataSource = ds.cloneWithRows(this.props.companies);
 
     return (
       <View style={styles.container}>
-        <ListView 
+        <FlatList 
           enableEmptySections={true}
           dataSource={this.dataSource}
           renderRow={(rowData) => 
