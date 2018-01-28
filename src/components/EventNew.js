@@ -272,7 +272,7 @@ class EventNew extends Component {
                   defaultValue={Object.keys(rowData)[0]}
                   editable={admin}
                   onChangeText={value => { 
-                    this.state.event.approved[rowID][value] = Object.values(rowData)[0]} }} />
+                    this.state.event.approved[rowID][value] = Object.values(rowData)[0]} } />
                 </View>
               )
             }  }
