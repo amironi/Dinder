@@ -1,5 +1,5 @@
 import { AppRegistry } from 'react-native';
 // import App from './App';
-import Main from './src/components/Main';
+import App from './src/components/App';
 
-AppRegistry.registerComponent('dinder', () => Main);
+AppRegistry.registerComponent('dinder', () => App);
