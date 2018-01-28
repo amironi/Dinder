@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ListView, TouchableOpacity, Image } from 'react-native';
-import { MKTextField, MKColor, MKButton} from 'react-native-material-kit';
+import { MKTextField, MKColor, MKButton, getTheme} from 'react-native-material-kit';
 import _ from 'lodash';
 import EventItem from './EventItem';
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -94,7 +94,8 @@ class EventsList extends Component {
   render() {
     const props = {
       title: 'הוסף ארוחה חדשה',
-      action: createNewMeal
+      action: createNewMeal,
+      admin : true
     };
 
     return (
@@ -109,12 +110,8 @@ class EventsList extends Component {
                 uid={rowID}
                 cb={() => {} } 
               navigation={this.props.navigation} /> } }/> 
-
-         
         </View>
         
-        {/* <EventItem event={email = 'sdfsdaf'} /> */}
-
         <View style={styles.add_button}>
             <AddButton
               // text = 'Add'
@@ -127,16 +124,5 @@ class EventsList extends Component {
     );
   }
 }
-
-// const mapStateToProps = state => {
-//   const people = _.map(state.people, (val, uid) => {
-//     return { ...val, uid};
-//   });
-
-//   return { 
-//     people,
-//     detailView: state.detailView,
-//  };
-// };
 
 export default EventsList;

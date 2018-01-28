@@ -61,7 +61,9 @@ const EventItem = (event) => {
 
                     const props  = {    
                         event : event.event,
-                        title : isAdmin(event.event) ? 'עדכן' : 'הרשם',
+                        uid : event.uid,
+                        admin : isAdmin(event.event),
+                        title : isAdmin(event.event) ? 'עדכן' : 'הצטרף',
                         action: isAdmin(event.event) ? 
                                     updateMeal : 
                                     register

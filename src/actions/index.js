@@ -1,21 +1,38 @@
 import firebase from 'firebase';
 
+export const isApproved = (event) => {
+    const { currentUser } = firebase.auth()
+    
+    console.log('isApproved',event ? event.approved[currentUser] != undefined : true);
+    return event ? event.approved[currentUser] != undefined : true;
+};
+ 
+  
 export const isAdmin = (event) => {
     const { currentUser } = firebase.auth()
     
     console.log('isAdmin',event ? currentUser.email == event.email : true);
     
+    // event.approved[currentUser]
     return event ? currentUser.email == event.email : true;
 };
 
 
-export const register = (event) => {
+
+export const register = (event,item) => {
     const { currentUser } = firebase.auth();
 
-//   event.wait = [...event.wait, currentUser ];
+    const data = {}
+    
+    //todo
+    // currentUser.displayName = 'amir mironi';
 
-   firebase.database().ref(`/events/${event.uid}`)
-   .set(data);
+    data['amir mironi'] = "dsf";
+
+    console.log(event);
+    console.log(data);
+
+    firebase.database().ref(`/events/${event.uid}/pending/`).set(data);
 };
 
 export const updateMeal = (event ) => {
@@ -55,10 +72,11 @@ export const deleteMeal = (event) => {
     // firebase.database().ref(`/events/${uid}/email/`)
     // .on('value', (snapshot) =>  {
     
-        // console.log(currentUser.email == snapshot.val());
-
-        if (isAdmin(event)){
-            alert('אינך מנהל האירוע')
+        console.log(event);
+        
+        if(!isAdmin(event.event))
+        {
+            alert('אינך מנהל האירוע');
             return;
         }
         
