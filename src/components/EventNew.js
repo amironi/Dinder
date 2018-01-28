@@ -80,16 +80,16 @@ const TextfieldWithFloatingLabel = MKTextField.textfieldWithFloatingLabel()
 
 class EventNew extends Component {
   
-  state = {
-    list_items: list_items
-  };
-  componentWillMount(){
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
-    });
+  // state = {
+  //   list_items: list_items
+  // };
+  // componentWillMount(){
+  //   const ds = new ListView.DataSource({
+  //     rowHasChanged: (r1, r2) => r1 !== r2,
+  //   });
 
-    this.dataSource = ds.cloneWithRows(this.state.list_items);
-  }
+  //   this.dataSource = ds.cloneWithRows(this.state.list_items);
+  // }
   componenrDidMount(){
 
     this.setState(...props.event);
@@ -108,13 +108,15 @@ class EventNew extends Component {
   //     ;
   //   }
   render() {
+    const event =  this.state;
+
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.form}>
         <TextfieldWithFloatingLabel  
             ref="defaultInput"
             placeholder={'סוג האירוע'}
-            onChangeText={value => this.state.type = value}
+            onChangeText={value => event.type = value}
           />
          <TextfieldWithFloatingLabel  
             ref="defaultInput"
