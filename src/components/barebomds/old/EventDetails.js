@@ -146,7 +146,7 @@ class EventDetails extends Component {
                <Text style={theme.cardContentStyle}>EDIT</Text>
             </TouchableOpacity> 
             <TouchableOpacity style={styles.sections}
-                onPress={() => { this.props.deleteContact(this.props.person.uid)}}>
+                onPress={() => { this.props.deleteContact(this.props.person.key)}}>
                <MaterialIcon name={'delete-forever'} size={40} style={styles.editIcon}/>
                <Text style={theme.cardContentStyle}>DELETE</Text>
             </TouchableOpacity> 

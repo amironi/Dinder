@@ -35,7 +35,7 @@ export const register = (event,item) => {
     console.log(event);
     console.log(data);
 
-    firebase.database().ref(`/events/${event.uid}/pending/`).set(data);
+    firebase.database().ref(`/events/${event.key}/pending/`).set(data);
 };
 
 export const updateEvent = (event,ok, err ) => {
@@ -48,13 +48,13 @@ export const updateEvent = (event,ok, err ) => {
        return;
    }
 
-   if (!event.uid ) {
+   if (!event.key ) {
         newEvent(event)
         ok();
         return;
     }
 
-   firebase.database().ref(`/events/${event.uid}`)
+   firebase.database().ref(`/events/${event.key}`)
    .set(event);
    
    ok();
@@ -89,7 +89,7 @@ export const deleteMeal = (event,cb) => {
         return;
     }
     
-    firebase.database().ref(`/events/${event.uid}`)
+    firebase.database().ref(`/events/${event.key}`)
         .remove()
         .then(() => {
             console.log('deleteMeal');
@@ -104,7 +104,7 @@ export const snapshotToArray = snapshot => {
 
     snapshot.forEach(childSnapshot => {
         const item = childSnapshot.val(); 
-        item.uid = childSnapshot.key;
+        item.key = childSnapshot.key;
         returnArr.push(item);
     });
 

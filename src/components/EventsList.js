@@ -62,19 +62,10 @@ class EventsList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  EventItem: {
-    width: 353,
-  },
-  footer: {
-    height: 150,
-  },
-  add_button: {
-     width: 353,
-     marginBottom: 100
   },
 
 });

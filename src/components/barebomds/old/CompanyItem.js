@@ -48,7 +48,7 @@ const CompanyItem = (props) => {
                 <Text style={[theme.cardTitleStyle, styles.title]}>{props.companies.company}</Text>
                 {props.companies.names.map((name) => {
                     return (
-                        <Text key={name.uid} style={[theme.cardActionStyle, styles.action]}>
+                        <Text key={name.key} style={[theme.cardActionStyle, styles.action]}>
                             {name.first_name} {name.last_name} - Project: {name.project}
                         </Text>
                     );

@@ -44,7 +44,17 @@ const EventItem = ({event,onPress}) => {
 };
 
 const styles = StyleSheet.create({
-
+    EventItem: {
+        width: 353,
+      },
+      footer: {
+        height: 150,
+      },
+      add_button: {
+         width: 353,
+         marginBottom: 100
+      },
+    
     card: {
       marginTop: 20,
     },

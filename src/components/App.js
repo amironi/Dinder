@@ -10,13 +10,13 @@ import firebase from 'firebase';
 import Login from './Login';
 import Loader from './Loader';
 import Navigation from './Navigation';
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
 
-import { createStore, applyMiddleware } from 'redux'
-import reducers from '../reducers/PeopleReducer';
-import Thunk from 'redux-thunk';
+// import { createStore, applyMiddleware } from 'redux'
+// import reducers from '../reducers/PeopleReducer';
+// import Thunk from 'redux-thunk';
 
-const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), applyMiddleware(Thunk));
+// const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), applyMiddleware(Thunk));
 
 
 const styles = StyleSheet.create({
@@ -50,7 +50,7 @@ export default class App extends Component {
         });
     }
 
-    render() {
+    renderInitialView() {
       switch (this.state.loggedIn) {
         case true:
         return <Navigation />
@@ -60,12 +60,11 @@ export default class App extends Component {
           return <Loader size="large" />;
       }
     }
-  // render() {
-  //   return (
-  //     <Provider store={store}>
-  //     {
-  //       this.renderInitialView()}
-  //     </Provider> 
-  //   );
-  // }
+  render() {
+    return (
+      <Container style={styles.container}>
+      { this.renderInitialView()}
+      </Container> 
+    );
+  }
 }
