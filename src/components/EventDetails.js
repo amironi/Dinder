@@ -169,21 +169,10 @@ class EventDetails extends Component {
 
           <Text style={styles.title}>מי מביא מה?</Text>
           <FlatList
-            data={ [
-              { 
-                name:  'נאוה',
-                item : 'חלה',
-              },
-              { 
-                name:  'עמיר',
-                item : 'שתיה',
-              },
-            
-            ] }
+            data={ event.approved}
             keyExtractor={item => item.name}
-          renderItem ={ ({ item, index }) => { return <AprovedItem admin={admin} pair={item}/> } 
-            
-          }
+          renderItem ={ ({ item, index }) => <AprovedItem admin={admin} pair={item}/> } 
+
           />
         
           {admin  && event.pending &&
