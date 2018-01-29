@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, Image, FlatList } from 'react-native';
+import { Button, Text, View, StyleSheet, ScrollView, Image, FlatList } from 'react-native';
 import { MKTextField, MKColor, MKButton } from 'react-native-material-kit';
 import { isApproved,updateEvent,isAdmin } from '../actions/index';
-import { AprovedItem } from './EventDetails/AprovedItem';
-import { Pending } from './EventDetails/Pending';
+import AprovedItem from './EventDetails/AprovedItem';
+import Pending from './EventDetails/Pending';
 
 
 const styles = StyleSheet.create({
@@ -67,7 +67,19 @@ class EventDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return {
+      headerRight: params.showSave && <Button 
+        transparent
+        style={{color: "#fff"}}
+        title="Save"
+        // size={28}
+        onPress={() => params.this_.AddEvent()}/>,
+
       title: ``,
+ 
+
+ 
+
+
       // title: `${params.admin  ? 'עדכן' : 'הצטרף'}`,
     };
   };
@@ -76,18 +88,38 @@ class EventDetails extends Component {
     event: {
       approved: [],
     }, 
+    admin: true,
     error: '',
   };
 
+    AddEvent() {
+          updateEvent(
+              this.state.event,
+              () => this.props.navigation.goBack(),
+              () => this.setState({ error: ('נא למלא  מקומות לאירוח*')  }));
+    }
+
   componentDidMount() {
+
+    this.props.navigation.setParams({ 
+      this_: this
+     })
+
+
+    // this.AddEvent.bind(this);
 
     this.setState({
       event: require('../data'),
+
     });
 
     const {event} = this.props.navigation.state.params;
-    event && this.setState({ event}) ;
+    event && 
+    this.setState({ event }) ;
   
+    event &&
+    this.setState({ admin: isAdmin(event) })
+
     setTimeout((() => {
        if (this.refs.defaultInput) {
          this.refs.defaultInput.focus();
@@ -118,6 +150,7 @@ class EventDetails extends Component {
     )
   }
 
+
   render() {
     const {event} = this.state;
     const admin = isAdmin(event);
@@ -126,9 +159,6 @@ class EventDetails extends Component {
       <ScrollView 
         style={styles.form} 
         showsVerticalScrollIndicator={false}>
-
-
-
 
           {this.renderTextfield(event,event.type, 'סוג/שם האירוע', false,'defaultInput')}
           {this.renderTextfield(event,event.area, 'שכונה ועיר')}
@@ -150,13 +180,16 @@ class EventDetails extends Component {
               },
             
             ] }
-            renderItem ={pair => <AprovedItem admin={admin} pair={pair}/> }
+            keyExtractor={item => item.name}
+          renderItem ={ ({ item, index }) => { return <AprovedItem admin={admin} pair={item}/> } 
+            
+          }
           />
         
           {admin  && event.pending &&
           <Pending pending={event.pending}/> }
           
-          {admin &&
+          {/* {admin &&
           <AddButton
               style={styles.add}
               onPress={() => {
@@ -168,7 +201,7 @@ class EventDetails extends Component {
                   ;
               } }
               />
-          }
+          } */}
 
       </ScrollView>
     );

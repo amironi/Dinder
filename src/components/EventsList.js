@@ -10,7 +10,7 @@ import { MKTextField, MKColor, MKButton, getTheme} from 'react-native-material-k
 import _ from 'lodash';
 import EventItem from './EventItem';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import { createNewMeal, loadInitialEvents } from '../actions';
+import { isAdmin, loadInitialEvents } from '../actions';
 
 
 const AddButton = MKButton
@@ -27,7 +27,7 @@ class EventsList extends Component {
       style={{color: "#fff"}}
       title="הוסף אירוע"
       // size={28}
-      onPress={() => navigation.navigate( 'EventDetails',{})}/>,
+      onPress={() => navigation.navigate( 'EventDetails',{showSave: true})}/>,
     title: ''
       })
 
@@ -40,7 +40,10 @@ class EventsList extends Component {
     }
 
     onPress(event) {
-       this.props.navigation.navigate( 'EventDetails', event )
+       this.props.navigation.navigate( 'EventDetails', {
+          showSave: isAdmin(event),
+          event: event
+          } )
     }
 
     render() {

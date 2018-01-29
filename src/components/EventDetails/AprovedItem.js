@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { MKTextField } from 'react-native-material-kit';
+import { Text,View, StyleSheet } from 'react-native';
+import { MKTextField,MKColor } from 'react-native-material-kit';
 
 const AprovedItem = ({admin,pair}) => {
 
-   const MTF = MKTextField
+   const MTF =  MKTextField.textfieldWithFloatingLabel()
     .withEditable(admin)
     .withTextInputStyle({ textAlign: 'right' })
     .withTintColor(MKColor.BlueGrey)
