@@ -5,7 +5,7 @@
 //     'שתיה': '',
 // };
 
-export const list_items = [
+export const approved = [
   { 
     name:  'נאוה',
     item : 'חלה',

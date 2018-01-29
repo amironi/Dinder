@@ -67,7 +67,8 @@ class EventDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return {
-      title: `${params.admin  ? 'עדכן' : 'הצטרף'}`,
+      title: ``,
+      // title: `${params.admin  ? 'עדכן' : 'הצטרף'}`,
     };
   };
 
@@ -79,19 +80,13 @@ class EventDetails extends Component {
   };
 
   componentDidMount() {
-   
-    console.log('EventDetails::componentDidMount', this.props);
 
-    const list_items = Object.assign({}, require('../data'));
-  
     this.setState({
-      event: {
-          approved: list_items,
-        },
+      event: require('../data'),
     });
 
     const {event} = this.props.navigation.state.params;
-    event && this.setState({  event  });
+    event && this.setState({ event}) ;
   
     setTimeout((() => {
        if (this.refs.defaultInput) {
@@ -111,7 +106,7 @@ class EventDetails extends Component {
     const password = showPass &&
                      !admin &&
                      !isApproved(event);
-    return 
+    return (
       <TF
         ref={defaultInput}
         placeholder={placeholder}
@@ -120,6 +115,7 @@ class EventDetails extends Component {
         password={password}
         onChangeText={value => field = value}
       />
+    )
   }
 
   render() {
@@ -131,6 +127,9 @@ class EventDetails extends Component {
         style={styles.form} 
         showsVerticalScrollIndicator={false}>
 
+
+
+
           {this.renderTextfield(event,event.type, 'סוג/שם האירוע', false,'defaultInput')}
           {this.renderTextfield(event,event.area, 'שכונה ועיר')}
           {this.renderTextfield(event,event.address, 'כתובת מדוייקת של האירוע( יוצג רק למוזמנים שאושרו', true)}
@@ -140,7 +139,17 @@ class EventDetails extends Component {
 
           <Text style={styles.title}>מי מביא מה?</Text>
           <FlatList
-            data={ event.approved }
+            data={ [
+              { 
+                name:  'נאוה',
+                item : 'חלה',
+              },
+              { 
+                name:  'עמיר',
+                item : 'שתיה',
+              },
+            
+            ] }
             renderItem ={pair => <AprovedItem admin={admin} pair={pair}/> }
           />
         
@@ -153,9 +162,10 @@ class EventDetails extends Component {
               onPress={() => {
                 updateEvent(
                     this.state.event,
+                    () => this.props.navigation.goBack(),
                     () => this.setState({ error: ('נא למלא  מקומות לאירוח*')  }));
     
-                  this.props.navigation.goBack();
+                  ;
               } }
               />
           }

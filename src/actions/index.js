@@ -11,10 +11,13 @@ export const isApproved = (event) => {
 export const isAdmin = (event) => {
     const { currentUser } = firebase.auth()
     
-    console.log('isAdmin',event ? currentUser.email == event.email : true);
+    console.log('isAdmin', event,
+    currentUser.email == 
+    (event.email ? event.email : currentUser.email));
     
     // event.approved[currentUser]
-    return event ? currentUser.email == event.email : true;
+    return currentUser.email == 
+    (event.email ? event.email : currentUser.email);
 };
 
 
@@ -35,37 +38,43 @@ export const register = (event,item) => {
     firebase.database().ref(`/events/${event.uid}/pending/`).set(data);
 };
 
-export const updateEvent = (event,err ) => {
+export const updateEvent = (event,ok, err ) => {
 
     // console.log(event);
 
 
    if (!event.sits ) {
-       cb()
+        err()
        return;
    }
 
+   if (!event.uid ) {
+        newEvent(event)
+        ok();
+        return;
+    }
 
    firebase.database().ref(`/events/${event.uid}`)
    .set(event);
-
+   
+   ok();
    // .then(() => {
    //     ;
    // });
 };
 
-export const createNewMeal = (data) => {
+export const newEvent = (event) => {
     const { currentUser } = firebase.auth();
     console.log(data);
     
-    data.admin = currentUser.displayName; //todo
-    data.email = currentUser.email;
-    data.remains = data.sits;
+    event.admin = currentUser.displayName; //todo
+    event.email = currentUser.email;
+    event.remains = data.sits;
 
     
-    data.remains &&
+    event.remains &&
     firebase.database().ref(`/events/`)
-        .push(data)
+        .push(event)
         .then(() => console.log('Good'))
         .catch((err) => console.log(err));
 

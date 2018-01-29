@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, FlatList, TouchableOpacity,ListFooterComponent, Image } from 'react-native';
+import { Button, Text, View, StyleSheet, FlatList, TouchableOpacity,ListFooterComponent, Image } from 'react-native';
 import { MKTextField, MKColor, MKButton, getTheme} from 'react-native-material-kit';
 import _ from 'lodash';
 import EventItem from './EventItem';
@@ -20,9 +20,16 @@ const AddButton = MKButton
 
 class EventsList extends Component {
    
-  static navigationOptions = {
-        title: "דינדר"
-      }
+
+  static navigationOptions = ({navigation}) => ({
+    headerRight: <Button 
+      transparent
+      style={{color: "#fff"}}
+      title="הוסף אירוע"
+      // size={28}
+      onPress={() => navigation.navigate( 'EventDetails',{})}/>,
+    title: ''
+      })
 
     state = {
         events: [] 
@@ -44,10 +51,6 @@ class EventsList extends Component {
             data={this.state.events}
             renderItem={ (event) =>{ return <EventItem event={event} onPress={() => this.onPress(event)} /> } }
             ListFooterComponent={<View style={styles.footer}></View>} /> 
-          
-          <AddButton 
-            style={styles.add_button}
-            onPress={ () => this.onPress({}) }/>
         </View>
       );
   }
