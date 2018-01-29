@@ -7,7 +7,7 @@ import {deleteMeal} from '../actions';
 
 const theme = getTheme();
 
-const EventItem = ({event,onPress}) => {
+const EventItem = ({event,navigate}) => {
 
     const swipeBtns = [{
         text: 'Delete',
@@ -22,7 +22,12 @@ const EventItem = ({event,onPress}) => {
             autoClose={true}
             backgroundColor= 'transparent'>
             <TouchableWithoutFeedback 
-                onPress={() => onPress() }>
+                onPress={() => {
+                    navigate( 'EventDetails', {
+                       showSave: isAdmin(event),
+                       event: event
+                       } )
+                 } }>
                 <View>
                     <Image
                         source={require('../images/background.jpg')}

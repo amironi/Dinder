@@ -85,9 +85,6 @@ class EventDetails extends Component {
   };
 
   state = {
-    event: {
-      approved: [],
-    }, 
     admin: true,
     error: '',
   };
@@ -98,27 +95,23 @@ class EventDetails extends Component {
               () => this.props.navigation.goBack(),
               () => this.setState({ error: ('נא למלא  מקומות לאירוח*')  }));
     }
-
-  componentDidMount() {
+//TODO realtime update
+  update(event)
+  {
+    this.setState({ event })
+  }
+  componentWillMount() {
 
     this.props.navigation.setParams({ 
       this_: this
      })
 
-
-    // this.AddEvent.bind(this);
-
-    this.setState({
-      event: require('../data'),
-
-    });
-
-    const {event} = this.props.navigation.state.params;
-    event && 
-    this.setState({ event }) ;
-  
-    event &&
-    this.setState({ admin: isAdmin(event) })
+    const {event,showSave} = this.props.navigation.state.params;
+    
+    this.setState({ 
+      event: event,
+      admin: showSave
+     })
 
     setTimeout((() => {
        if (this.refs.defaultInput) {
@@ -134,7 +127,9 @@ class EventDetails extends Component {
     showPass = false, 
     defaultInput = ''){
     
-    const admin = isAdmin(event);
+    // console.log(event)
+
+    const {admin} = this.state;
     const password = showPass &&
                      !admin &&
                      !isApproved(event);
@@ -142,29 +137,27 @@ class EventDetails extends Component {
       <TF
         ref={defaultInput}
         placeholder={placeholder}
-        defaultValue={field}
+        defaultValue={event[field]}
         editable={admin}
         password={password}
-        onChangeText={value => field = value}
+        onChangeText={value => event[field] = value }
       />
     )
   }
 
-
   render() {
-    const {event} = this.state;
-    const admin = isAdmin(event);
+    const {event,admin} = this.state;
 
    return (
       <ScrollView 
         style={styles.form} 
         showsVerticalScrollIndicator={false}>
 
-          {this.renderTextfield(event,event.type, 'סוג/שם האירוע', false,'defaultInput')}
-          {this.renderTextfield(event,event.area, 'שכונה ועיר')}
-          {this.renderTextfield(event,event.address, 'כתובת מדוייקת של האירוע( יוצג רק למוזמנים שאושרו', true)}
-          {this.renderTextfield(event,event.date, 'תאריך ושעה')}
-          {this.renderTextfield(event,event.sits, 'מספר מקומות לאירוח')}
+          {this.renderTextfield(event,'type', 'סוג/שם האירוע', false,'defaultInput')}
+          {this.renderTextfield(event,'area', 'שכונה ועיר')}
+          {this.renderTextfield(event,'address', 'כתובת מדוייקת של האירוע( יוצג רק למוזמנים שאושרו', true)}
+          {this.renderTextfield(event,'date', 'תאריך ושעה')}
+          {this.renderTextfield(event,'sits', 'מספר מקומות לאירוח')}
           <Text style={styles.error}>{this.state.error}</Text>
 
           <Text style={styles.title}>מי מביא מה?</Text>
@@ -177,20 +170,6 @@ class EventDetails extends Component {
         
           {admin  && event.pending &&
           <Pending pending={event.pending}/> }
-          
-          {/* {admin &&
-          <AddButton
-              style={styles.add}
-              onPress={() => {
-                updateEvent(
-                    this.state.event,
-                    () => this.props.navigation.goBack(),
-                    () => this.setState({ error: ('נא למלא  מקומות לאירוח*')  }));
-    
-                  ;
-              } }
-              />
-          } */}
 
       </ScrollView>
     );

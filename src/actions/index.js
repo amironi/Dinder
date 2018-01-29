@@ -11,9 +11,9 @@ export const isApproved = (event) => {
 export const isAdmin = (event) => {
     const { currentUser } = firebase.auth()
     
-    console.log('isAdmin', event,
-    currentUser.email == 
-    (event.email ? event.email : currentUser.email));
+    // console.log('isAdmin', event,
+    // currentUser.email == 
+    // (event.email ? event.email : currentUser.email));
     
     // event.approved[currentUser]
     return currentUser.email == 
@@ -65,11 +65,11 @@ export const updateEvent = (event,ok, err ) => {
 
 export const newEvent = (event) => {
     const { currentUser } = firebase.auth();
-    console.log(data);
+    console.log(event);
     
     event.admin = currentUser.displayName; //todo
     event.email = currentUser.email;
-    event.remains = data.sits;
+    event.remains = event.sits;
 
     
     event.remains &&

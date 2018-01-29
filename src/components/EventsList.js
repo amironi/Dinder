@@ -27,7 +27,9 @@ class EventsList extends Component {
       style={{color: "#fff"}}
       title="הוסף אירוע"
       // size={28}
-      onPress={() => navigation.navigate( 'EventDetails',{showSave: true})}/>,
+      onPress={() => navigation.navigate( 'EventDetails',{
+        event: require('../data'),
+        showSave: true})}/>,
     title: ''
       })
 
@@ -39,20 +41,15 @@ class EventsList extends Component {
       loadInitialEvents( (events) => this.setState({events}))
     }
 
-    onPress(event) {
-       this.props.navigation.navigate( 'EventDetails', {
-          showSave: isAdmin(event),
-          event: event
-          } )
-    }
-
     render() {
- 
       return (
         <View style={styles.container}>
           <FlatList 
             data={this.state.events}
-            renderItem={ (event) =>{ return <EventItem event={event} onPress={() => this.onPress(event)} /> } }
+            renderItem={ ({item,index}) =>{ return <EventItem 
+              event={item} 
+              index={index} 
+              navigate={this.props.navigation.navigate} /> } }
             ListFooterComponent={<View style={styles.footer}></View>} /> 
         </View>
       );
@@ -62,7 +59,7 @@ class EventsList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    // width: 364,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
