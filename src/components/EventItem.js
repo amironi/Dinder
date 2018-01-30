@@ -17,7 +17,7 @@ const EventItem = ({event,onPressed}) => {
         backgroundColor: 'red',
         onPress: () => deleteMeal(event) 
       }];
-//TODO : add  numver of pending
+        //TODO : add  number of pending
     return (
         <View>
         {isAdmin && <Swipeout 
