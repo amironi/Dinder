@@ -32,10 +32,15 @@ class EventsList extends Component {
     onEventSeleced(index = null){
       this.setState({currectID = index } );
     }
-
+    newEvent(){
+      this.onEventSeleced( 
+        this.state.events.push({ food: require('../data') }) -1);
+    }
 
     cancel(){
       this.onEventSeleced();
+
+      //TODO remove this and restore prev stat
       this.componentDidMount();
     }
 
@@ -47,11 +52,7 @@ class EventsList extends Component {
     }
 
 
-    newEvent(){
-      events.push( { food: require('../data') } )
-      
-      this.setState({currectID = events.length -1 } )
-    }
+
 
     render() {
       

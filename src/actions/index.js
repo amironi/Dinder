@@ -15,21 +15,6 @@ export const isAdmin = (event) => {
         (event.email ? event.email : currentUser.email);
 };
 
-
-
-export const register = (event,key) => {
-    const { currentUser } = firebase.auth();
-
-    const data = {}
-    
-    //todo
-    // currentUser.displayName = 'amir mironi';
-    event.food[key].person = currentUser.displayName;
-    event.food[key].status = 'pending'
-    
-    updateEvent(event)
-};
-
 export const updateEvent = (event,ok, err ) => {
 
     // console.log(event);
