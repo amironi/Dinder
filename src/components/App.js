@@ -10,6 +10,7 @@ import firebase from 'firebase';
 import Login from './Login';
 import Loader from './Loader';
 import Navigation from './Navigation';
+import EventsList from './EventsList';
 
 export default class App extends Component {
   state = { loggedIn: null};
@@ -36,7 +37,7 @@ export default class App extends Component {
     render() {
       switch (this.state.loggedIn) {
         case true:
-        return <Navigation />
+        return <EventsList />
         case false:
           return <Login />;
         default:

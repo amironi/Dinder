@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Text, View, StyleSheet, ScrollView, Image, FlatList } from 'react-native';
 import { MKTextField, MKColor, MKButton } from 'react-native-material-kit';
-import { updateEvent,isAdmin } from '../actions/index';
+import { isApproved,updateEvent,isAdmin } from '../actions/index';
 import AprovedItem from './EventDetails/AprovedItem';
 import Pending from './EventDetails/Pending';
 
@@ -63,15 +63,62 @@ const TF = MKTextField.textfieldWithFloatingLabel()
   })
   .build();
 
-const EventDetails = ({event,error}) => {
-    // componentWillMount() {
+class EventDetails extends Component {
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return {
+      headerRight: params.showSave && <Button 
+        transparent
+        style={{color: "#fff"}}
+        title="Save"
+        // size={28}
+        onPress={() => params.this_.AddEvent()}/>,
 
-    //   setTimeout((() => {
-    //      if (this.refs.defaultInput) {
-    //        this.refs.defaultInput.focus();
-    //      }
-    //   }), 1000);
-    // }
+      title: ``,
+ 
+
+ 
+
+
+      // title: `${params.admin  ? 'עדכן' : 'הצטרף'}`,
+    };
+  };
+
+  state = {
+    admin: true,
+    error: '',
+  };
+
+    AddEvent() {
+          updateEvent(
+              this.state.event,
+              () => this.props.navigation.goBack(),
+              () => this.setState({ error: ('נא למלא  מקומות לאירוח*')  }));
+    }
+//TODO realtime update
+  update(event)
+  {
+    this.setState({ event })
+  }
+  componentWillMount() {
+
+    this.props.navigation.setParams({ 
+      this_: this
+     })
+
+    const {event,showSave} = this.props.navigation.state.params;
+    
+    this.setState({ 
+      event: event,
+      admin: showSave
+     })
+
+    setTimeout((() => {
+       if (this.refs.defaultInput) {
+         this.refs.defaultInput.focus();
+       }
+    }), 1000);
+  }
 
   renderTextfield(
     event,
@@ -80,13 +127,15 @@ const EventDetails = ({event,error}) => {
     showPass = false, 
     defaultInput = ''){
     
-    const admin = isAdmin(event);
+    // console.log(event)
+
+    const {admin} = this.state;
     const password = showPass &&
                      !admin &&
                      !isApproved(event);
     return (
       <TF
-        // ref={defaultInput}
+        ref={defaultInput}
         placeholder={placeholder}
         defaultValue={event[field]}
         editable={admin}
@@ -96,11 +145,17 @@ const EventDetails = ({event,error}) => {
     )
   }
 
-  
-  const admin = isAdmin(event);
-  
+  render() {
+    const {event,admin} = this.state;
+
    return (
-  
+      // <Button 
+      // transparent
+      // style={{color: "#fff"}}
+      // title="Save"
+      // // size={28}
+      // onPress={() => params.this_.AddEvent()}/>
+      
       <ScrollView 
         style={styles.form} 
         showsVerticalScrollIndicator={false}>
@@ -110,24 +165,21 @@ const EventDetails = ({event,error}) => {
           {this.renderTextfield(event,'address', 'כתובת מדוייקת של האירוע( יוצג רק למוזמנים שאושרו', true)}
           {this.renderTextfield(event,'date', 'תאריך ושעה')}
           {this.renderTextfield(event,'sits', 'מספר מקומות לאירוח')}
-          <Text style={styles.error}>{error}</Text>
+          <Text style={styles.error}>{this.state.error}</Text>
 
           <Text style={styles.title}>מי מביא מה?</Text>
           <FlatList
-            data={ event.food }
-            renderItem ={ ({ item, index }) => <AprovedItem 
-                                                  event={event} 
-                                                  admin={admin} 
-                                                  tuple={item}/> } 
+            data={ event.approved}
+            renderItem ={ ({ item, index }) => <AprovedItem admin={admin} pair={item}/> } 
 
           />
-{/*         
+        
           {admin  && event.pending &&
-          <Pending pending={event.pending}/> } */}
+          <Pending pending={event.pending}/> }
 
       </ScrollView>
     );
-  
+  }
 }
 
 

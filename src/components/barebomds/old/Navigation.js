@@ -1,9 +1,7 @@
 import { StackNavigator } from 'react-navigation';
 import EventsList from './EventsList';
-// import CompanyList from './CompanyList';
 import EventDetails from './EventDetails';
-// import EventEdit from './EventEdit';
-// import EventDetails from './EventDetails';
+
 
 
 const Navigation = StackNavigator({

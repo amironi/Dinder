@@ -4,17 +4,16 @@
 //     'דגים': '',
 //     'שתיה': '',
 // };
-
-export const approved = [
+[
   { 
-    key: 1,
-    name:  'נאוה',
-    item : 'חלה',
+    key: 0,
+    person:  'נאוה',
+    food : 'חלה',
   },
   { 
-    key: 2,
-    name:  'עמיר',
-    item : 'שתיה',
+    key: 1,
+    person:  'עמיר',
+    food : 'שתיה',
   },
 
 ];

@@ -3,31 +3,29 @@ import { Text, View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-n
 import { getTheme } from 'react-native-material-kit';
 import Swipeout from 'react-native-swipeout';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import {deleteMeal} from '../actions';
+import {deleteMeal,isAdmin} from '../actions';
 
 const theme = getTheme();
 
-const EventItem = ({event,navigate}) => {
+const EventItem = ({event,onPressed}) => {
 
+    
+    const isAdmin = isAdmin(event);
+    
     const swipeBtns = [{
         text: 'Delete',
         backgroundColor: 'red',
         onPress: () => deleteMeal(event) 
       }];
-
+//TODO : add  numver of pending
     return (
-        <Swipeout 
+        <View>
+        {isAdmin && <Swipeout 
             style={[theme.cardStyle, styles.card]}
             right={swipeBtns}
             autoClose={true}
-            backgroundColor= 'transparent'>
-            <TouchableWithoutFeedback 
-                onPress={() => {
-                    navigate( 'EventDetails', {
-                       showSave: isAdmin(event),
-                       event: event
-                       } )
-                 } }>
+            backgroundColor= 'transparent'> }
+            <TouchableWithoutFeedback onPress={() => { onPressed() }  }>
                 <View>
                     <Image
                         source={require('../images/background.jpg')}
@@ -44,7 +42,8 @@ const EventItem = ({event,navigate}) => {
                     <Text style={[theme.cardTitleStyle, styles.title]}>{event.remains} : מספר המקומות שנותרו</Text>
                 </View>
             </TouchableWithoutFeedback>
-        </Swipeout>
+            {isAdmin && </Swipeout>}
+        </View>
     );
 };
 

@@ -20,19 +20,6 @@ const AddButton = MKButton
 
 class EventsList extends Component {
    
-
-  static navigationOptions = ({navigation}) => ({
-    headerRight: <Button 
-      transparent
-      style={{color: "#fff"}}
-      title="הוסף אירוע"
-      // size={28}
-      onPress={() => navigation.navigate( 'EventDetails',{
-        event: require('../data'),
-        showSave: true})}/>,
-    title: ''
-      })
-
     state = {
         events: [] 
     };
@@ -41,16 +28,61 @@ class EventsList extends Component {
       loadInitialEvents( (events) => this.setState({events}))
     }
 
+  
+    onEventSeleced(index = null){
+      this.setState({currectID = index } );
+    }
+
+
+    cancel(){
+      this.onEventSeleced();
+      this.componentDidMount();
+    }
+
+    saveChanges(){
+      updateEvent(
+        events[currectID]),
+        () => this.setState({currectID = null } ),
+        () => this.setState({ error: ('נא למלא  מקומות לאירוח*')  } )
+    }
+
+
+    newEvent(){
+      events.push( { food: require('../data') } )
+      
+      this.setState({currectID = events.length -1 } )
+    }
+
     render() {
+      
+      const {currectID,events,error} = this.state;
+
       return (
         <View style={styles.container}>
-          <FlatList 
-            data={this.state.events}
+
+          {<Button 
+              transparent
+              style={{color: "#fff"}}
+              title={currectID ? 'שמור' : 'חדש'}
+              onPress={() => currectID ? this.saveChanges() : this.newEvent()}/>}
+  
+          {currectID && <Button 
+              transparent
+              style={{color: "#fff"}}
+              title={'Back'}
+              onPress={() =>  this.cancel()}/>}
+
+
+          {currectID === null &&<FlatList 
+            data={events}
             renderItem={ ({item,index}) =>{ return <EventItem 
               event={item} 
-              index={index} 
-              navigate={this.props.navigation.navigate} /> } }
-            ListFooterComponent={<View style={styles.footer}></View>} /> 
+              onPressed={() => this.onEventSeleced(index) } /> } }
+              ListFooterComponent={<View style={styles.footer}></View>} /> }}
+
+          
+          {currectID && <EventDetails error={error} event={events[currectID]} /> }
+
         </View>
       );
   }

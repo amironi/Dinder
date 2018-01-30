@@ -10,32 +10,24 @@ export const isApproved = (event) => {
   
 export const isAdmin = (event) => {
     const { currentUser } = firebase.auth()
-    
-    // console.log('isAdmin', event,
-    // currentUser.email == 
-    // (event.email ? event.email : currentUser.email));
-    
-    // event.approved[currentUser]
+
     return currentUser.email == 
-    (event.email ? event.email : currentUser.email);
+        (event.email ? event.email : currentUser.email);
 };
 
 
 
-export const register = (event,item) => {
+export const register = (event,key) => {
     const { currentUser } = firebase.auth();
 
     const data = {}
     
     //todo
     // currentUser.displayName = 'amir mironi';
-
-    data['amir mironi'] = "dsf";
-
-    console.log(event);
-    console.log(data);
-
-    firebase.database().ref(`/events/${event.key}/pending/`).set(data);
+    event.food[key].person = currentUser.displayName;
+    event.food[key].status = 'pending'
+    
+    updateEvent(event)
 };
 
 export const updateEvent = (event,ok, err ) => {
@@ -83,11 +75,6 @@ export const newEvent = (event) => {
 
 export const deleteMeal = (event,cb) => {
 
-    if(!isAdmin(event))
-    {
-        alert('אינך מנהל האירוע');
-        return;
-    }
     
     firebase.database().ref(`/events/${event.key}`)
         .remove()
