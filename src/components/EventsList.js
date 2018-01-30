@@ -59,43 +59,55 @@ class EventsList extends Component {
       const {currectID,events,error,prevEvents} = this.state;
 
       return (
-        <View style={styles.container}>
+        <View style={styles.main}>
 
-        {!currectID && <Button transparent style={{color: "#fff"}}
+          {!currectID && <Button transparent style={{color: "#fff"}}
               title={'חדש'}
               onPress={() => this.newEvent()}/>}
-        
-        {currectID && <Button transparent style={{color: "#fff"}}
-              title={prevEvents === events ? 'Save' : 'Cancel'}
-              onPress={() => prevEvents === events ? this.save() : this.cancel()}/>}
   
-          {currectID && <Button transparent style={{color: "#fff"}}
-              title={'<Back'}
-              onPress={() => this.back()}/>}
-
-          {currectID === null &&<FlatList 
+           {!currectID &&<FlatList 
             data={events}
             renderItem={ ({item,index}) =>{ return <EventItem 
               event={item} 
               onPressed={() => this.onEventSeleced(index) } /> } }
               ListFooterComponent={<View style={styles.footer}></View>} /> }}
           
-          {currectID && <EventDetails error={error} event={events[currectID]} /> }
+            {currectID && prevEvents !== events && <Button transparent style={{color: "#fff"}}
+              title={'Cancel'}
+              onPress={() => this.save()}/>}
+
+            {currectID && prevEvents !== events && <Button transparent style={{color: "#fff"}}
+              title={'Discard'}
+              onPress={() => this.cancel()}/>}
+  
+            {currectID && <Button transparent style={{color: "#fff"}}
+              title={'<Back'}
+              onPress={() => this.back()}/>}
+            {currectID && <EventDetails error={error} event={events[currectID]} /> }
 
         </View>
       );
   }
 }
  
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // width: 364,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
-
+  main: {
+    flex: 1,
+    paddingTop: 35,
+    backgroundColor: '#e8e8e8',
+  },
+  header: {
+    fontSize: 40,
+  },
 });
+
 
 export default EventsList;

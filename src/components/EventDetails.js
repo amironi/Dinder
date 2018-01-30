@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { Button, Text, View, StyleSheet, ScrollView, Image, FlatList } from 'react-native';
 import { MKTextField, MKColor, MKButton } from 'react-native-material-kit';
 import { updateEvent,isAdmin } from '../actions/index';
-import AprovedItem from './EventDetails/AprovedItem';
-import Pending from './EventDetails/Pending';
-
+import FoodItem from './FoodItem';
 
 const styles = StyleSheet.create({
   form: {
@@ -115,16 +113,16 @@ const EventDetails = ({event,error}) => {
           <Text style={styles.title}>מי מביא מה?</Text>
           <FlatList
             data={ event.food }
-            renderItem ={ ({ item, index }) => <AprovedItem 
+            renderItem ={ ({ item, index }) => <FoodItem 
                                                   event={event} 
                                                   admin={admin} 
-                                                  tuple={item}/> } 
+                                                  item={item}/> } 
 
           />
-{/*         
-          {admin  && event.pending &&
-          <Pending pending={event.pending}/> } */}
 
+            {currectID && <Button transparent style={{color: "#fff"}}
+              title={'Delete'}
+              onPress={() => deleteMeal(event)}/>}
       </ScrollView>
     );
   

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text,View, StyleSheet } from 'react-native';
 import { MKTextField,MKColor } from 'react-native-material-kit';
 
-const AprovedItem = ({admin,item,event}) => {
+const FoodItem = ({admin,item,event}) => {
 
    const MTF =  MKTextField.textfieldWithFloatingLabel()
     .withEditable(admin)
@@ -11,8 +11,7 @@ const AprovedItem = ({admin,item,event}) => {
     .build();
 
     const {food,person,status,key} = item;
-    const { currentUser } = firebase.auth();
-    const me = currentUser.displayName;
+    const { displayName } = firebase.auth().currentUser
 
     // currentUser.displayName = 'amir mironi';
 
@@ -29,14 +28,13 @@ const AprovedItem = ({admin,item,event}) => {
       {!admin && person === me && <Button  transparent
         style={{color: "#fff"}}
         title={'בטל'}
-        onPress={() => {food[key].person = null; food[key].pending = null} }/>}
-
+        onPress={() => {food[key].person = ''; food[key].pending = null} }/>}
 
       {admin && pending && <Button  raised  title="Approve" onPress={ () => pending = null}/>}
-      {admin && pending && <Button  raised  title="Decline" onPress={ () => {pending = null; person = null }}/>}
+      {admin && pending && <Button  raised  title="Decline" onPress={ () => {pending = null; person = '' }}/>}
 
     </View>
     )
 }
 
-export default AprovedItem;
+export default FoodItem;

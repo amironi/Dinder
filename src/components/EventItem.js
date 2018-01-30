@@ -10,21 +10,9 @@ const theme = getTheme();
 const EventItem = ({event,onPressed}) => {
 
     
-    const isAdmin = isAdmin(event);
-    
-    const swipeBtns = [{
-        text: 'Delete',
-        backgroundColor: 'red',
-        onPress: () => deleteMeal(event) 
-      }];
-        //TODO : add  number of pending
+
     return (
         <View>
-        {isAdmin && <Swipeout 
-            style={[theme.cardStyle, styles.card]}
-            right={swipeBtns}
-            autoClose={true}
-            backgroundColor= 'transparent'> }
             <TouchableWithoutFeedback onPress={() => { onPressed() }  }>
                 <View>
                     <Image
@@ -36,13 +24,15 @@ const EventItem = ({event,onPressed}) => {
                         size={100} 
                         style={styles.icon}
                     />
+
+                    {isAdmin && <Badge value={getPendingCount(event)} containerStyle={{ backgroundColor: 'violet'}}/>}
+  
                     <Text style={[theme.cardTitleStyle, styles.title]}>{event.type} : האירוע</Text>
                     <Text style={[theme.cardTitleStyle, styles.title]}>{event.area} : באיזור</Text>
                     <Text style={[theme.cardTitleStyle, styles.title]}>{event.date} : במועד</Text>
                     <Text style={[theme.cardTitleStyle, styles.title]}>{event.remains} : מספר המקומות שנותרו</Text>
                 </View>
             </TouchableWithoutFeedback>
-            {isAdmin && </Swipeout>}
         </View>
     );
 };

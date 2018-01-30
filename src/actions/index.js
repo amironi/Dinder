@@ -2,11 +2,31 @@ import firebase from 'firebase';
 
 export const isApproved = (event) => {
     const { currentUser } = firebase.auth()
+
+    const { displayName } = firebase.auth().currentUser;
+
+    for(var i=0; i < event.food.length; i++)
+    {
+        if( event.food[i].person === displayName ){
+          return true;
+        }
+    }
+
+    return false;
     
-    console.log('isApproved',event ? event.approved[currentUser] != undefined : true);
-    return event ? event.approved[currentUser] != undefined : true;
 };
- 
+
+export const getPendingCount = (event) => {
+
+    let c = 0
+    for(var i=0; i < event.food.length; i++)
+    {
+        if( event.food[i].pending ){
+          c++;
+        }
+    }
+  return c;
+};
   
 export const isAdmin = (event) => {
     const { currentUser } = firebase.auth()
